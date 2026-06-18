@@ -265,58 +265,58 @@
 
 ## Phase 4 — `runners/`
 
-- [ ] T260 Test: `test_baseline_oom.py` mocked loader raises → FailureReport captures exc type
-- [ ] T261 Test: FailureReport captures peak-mem trace
-- [ ] T262 Test: FailureReport captures timestamp + diagnosis hint
-- [ ] T263 Impl: `runners/baseline_oom.py` HF FP16 load via gatekeeper.load_model
-- [ ] T264 Impl: capture exception + memory trace
-- [ ] T265 Impl: `FailureReport` dataclass
-- [ ] T266 Test: `test_baseline_llamacpp.py` mocked subprocess stdout → RunMetrics
-- [ ] T267 Test: parser extracts prefill timing
-- [ ] T268 Test: parser extracts eval/decode timing + tokens/sec
-- [ ] T269 Test: parser handles malformed output
-- [ ] T270 Impl: `runners/baseline_llamacpp.py` download GGUF (gatekeeper)
-- [ ] T271 Impl: run llama.cpp subprocess (gatekeeper) + capture stdout
-- [ ] T272 Impl: `llamacpp_parser.py` stdout parser
-- [ ] T273 Impl: `RunMetrics` dataclass
-- [ ] T274 Test: `test_layered.py` iterate N fake blocks materialize→forward→free
-- [ ] T275 Test: per-layer IO time recorded
-- [ ] T276 Test: per-layer compute time recorded
-- [ ] T277 Test: peak mem bounded (frees each block before next)
-- [ ] T278 Impl: `runners/layered.py` per-block streaming from SSD
-- [ ] T279 Impl: per-layer instrumentation (IO vs compute)
-- [ ] T280 Impl: `LayeredMetrics` dataclass
-- [ ] T281 Test: `test_airllm.py` mocked airllm success → RunMetrics
-- [ ] T282 Test: ImportError → ConstraintReport (no crash)
-- [ ] T283 Test: CUDA-unavailable → ConstraintReport
-- [ ] T284 Impl: `runners/airllm.py` real attempt via gatekeeper.load_model
-- [ ] T285 Impl: `ConstraintReport` dataclass (reason, platform, fallback)
-- [ ] T286 Test: `test_quant_sweep.py` serial loop download→bench→quality→delete (mock)
-- [ ] T287 Test: never holds >1 weight file (delete before next download)
-- [ ] T288 Test: red-line rule = first level where ΔPPL vs Q8 baseline exceeds config threshold
+- [x] T260 Test: `test_baseline_oom.py` mocked loader raises → FailureReport captures exc type
+- [x] T261 Test: FailureReport captures peak-mem trace
+- [x] T262 Test: FailureReport captures timestamp + diagnosis hint
+- [x] T263 Impl: `runners/baseline_oom.py` HF FP16 load via gatekeeper.load_model
+- [x] T264 Impl: capture exception + memory trace
+- [x] T265 Impl: `FailureReport` dataclass
+- [x] T266 Test: `test_baseline_llamacpp.py` mocked subprocess stdout → RunMetrics
+- [x] T267 Test: parser extracts prefill timing
+- [x] T268 Test: parser extracts eval/decode timing + tokens/sec
+- [x] T269 Test: parser handles malformed output
+- [x] T270 Impl: `runners/baseline_llamacpp.py` download GGUF (gatekeeper)
+- [x] T271 Impl: run llama.cpp subprocess (gatekeeper) + capture stdout
+- [x] T272 Impl: `llamacpp_parser.py` stdout parser
+- [x] T273 Impl: `RunMetrics` dataclass
+- [x] T274 Test: `test_layered.py` iterate N fake blocks materialize→forward→free
+- [x] T275 Test: per-layer IO time recorded
+- [x] T276 Test: per-layer compute time recorded
+- [x] T277 Test: peak mem bounded (frees each block before next)
+- [x] T278 Impl: `runners/layered.py` per-block streaming from SSD
+- [x] T279 Impl: per-layer instrumentation (IO vs compute)
+- [x] T280 Impl: `LayeredMetrics` dataclass
+- [x] T281 Test: `test_airllm.py` mocked airllm success → RunMetrics
+- [x] T282 Test: ImportError → ConstraintReport (no crash)
+- [x] T283 Test: CUDA-unavailable → ConstraintReport
+- [x] T284 Impl: `runners/airllm.py` real attempt via gatekeeper.load_model
+- [x] T285 Impl: `ConstraintReport` dataclass (reason, platform, fallback)
+- [x] T286 Test: `test_quant_sweep.py` serial loop download→bench→quality→delete (mock)
+- [x] T287 Test: never holds >1 weight file (delete before next download)
+- [x] T288 Test: red-line rule = first level where ΔPPL vs Q8 baseline exceeds config threshold
 - [ ] T288a Test: `llama-perplexity` fixture output parsed → final PPL float
-- [ ] T289 Impl: `runners/quant_sweep.py` serial sweep reusing baseline_llamacpp
-- [ ] T290 Impl: quality probe = **perplexity via llama.cpp `llama-perplexity`** (gatekeeper subprocess) on a fixed corpus; deterministic exact-match as secondary signal
+- [x] T289 Impl: `runners/quant_sweep.py` serial sweep reusing baseline_llamacpp
+- [x] T290 Impl: quality probe = **perplexity via llama.cpp `llama-perplexity`** (gatekeeper subprocess) on a fixed corpus; deterministic exact-match as secondary signal
 - [ ] T290a Impl: perplexity parser + config-driven red-line threshold (ΔPPL)
-- [ ] T291 Impl: weight cleanup between levels
-- [ ] T292 Test: `test_extreme.py` 70B path mocked → RunMetrics high per-token IO
-- [ ] T293 Impl: `runners/extreme.py` 70B via airllm/layered, few tokens
-- [ ] T296 Test: baseline_oom maps MPS-OOM vs generic OOM to diagnosis hint
-- [ ] T297 Test: baseline_oom records partial memory growth before failure
-- [ ] T298 Test: llamacpp runner honors timeout → records failure not crash
-- [ ] T299 Test: llamacpp parser variant (Metal log lines) parsed
-- [ ] T300 Test: llamacpp parser extracts ctx size + n_threads echoed
-- [ ] T301 Test: layered runner records cumulative IO bytes
-- [ ] T302 Test: layered runner reports predicted vs actual per-layer IO
-- [ ] T303 Test: airllm runner passes weights_dir from config
-- [ ] T304 Test: quant_sweep continues after one level fails (records + moves on)
-- [ ] T305 Test: quality probe deterministic under fixed seed
-- [ ] T306 Test: extreme runner caps tokens from config
-- [ ] T307 Test: extreme runner ConstraintReport path
-- [ ] T308 Impl: close gaps from T296–T307
-- [ ] T309 Verify runners route ALL externals via gatekeeper (grep, R3)
-- [ ] T294 Confirm runner files ≤150 lines (split parsers)
-- [ ] T295 ruff clean + commit: runners →commit
+- [x] T291 Impl: weight cleanup between levels
+- [x] T292 Test: `test_extreme.py` 70B path mocked → RunMetrics high per-token IO
+- [x] T293 Impl: `runners/extreme.py` 70B via airllm/layered, few tokens
+- [x] T296 Test: baseline_oom maps MPS-OOM vs generic OOM to diagnosis hint
+- [x] T297 Test: baseline_oom records partial memory growth before failure
+- [x] T298 Test: llamacpp runner honors timeout → records failure not crash
+- [x] T299 Test: llamacpp parser variant (Metal log lines) parsed
+- [x] T300 Test: llamacpp parser extracts ctx size + n_threads echoed
+- [x] T301 Test: layered runner records cumulative IO bytes
+- [x] T302 Test: layered runner reports predicted vs actual per-layer IO
+- [x] T303 Test: airllm runner passes weights_dir from config
+- [x] T304 Test: quant_sweep continues after one level fails (records + moves on)
+- [x] T305 Test: quality probe deterministic under fixed seed
+- [x] T306 Test: extreme runner caps tokens from config
+- [x] T307 Test: extreme runner ConstraintReport path
+- [x] T308 Impl: close gaps from T296–T307
+- [x] T309 Verify runners route ALL externals via gatekeeper (grep, R3)
+- [x] T294 Confirm runner files ≤150 lines (split parsers)
+- [x] T295 ruff clean + commit: runners →commit
 
 ## Phase 5 — `economics/`
 
