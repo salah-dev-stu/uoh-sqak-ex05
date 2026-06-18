@@ -336,60 +336,60 @@
 
 ## Phase 6 — CLI
 
-- [ ] T335 Test: `test_cli.py` `probe` dispatches to SDK
-- [ ] T336 Test: `baseline-oom` dispatches
-- [ ] T337 Test: `baseline` dispatches (quant arg)
-- [ ] T338 Test: `airllm` dispatches
-- [ ] T339 Test: `layered` dispatches
-- [ ] T340 Test: `quant-sweep` dispatches
-- [ ] T341 Test: `extreme` dispatches
-- [ ] T342 Test: `economics` dispatches
-- [ ] T343 Test: `figures` dispatches
-- [ ] T344 Test: `all` runs full pipeline order
-- [ ] T345 Test: bad args → nonzero exit + usage
-- [ ] T346 Impl: `cli.py` argparse + subcommand registry
-- [ ] T347 Impl: `cli_handlers.py` probe/baseline handlers
-- [ ] T348 Impl: airllm/layered/quant/extreme handlers
-- [ ] T349 Impl: economics/figures/all handlers
-- [ ] T350 Impl: each handler writes artifacts + prints summary table
-- [ ] T351 Impl: `main()` entry
-- [ ] T355 Test: CLI `--version` prints VERSION (single-source)
-- [ ] T356 Test: CLI `--config-dir` overrides config location
-- [ ] T357 Test: CLI `--run-id` / auto run-id behavior
-- [ ] T358 Test: CLI `baseline --quant Q4_K_M` passes the level through
-- [ ] T359 Test: CLI prints artifact paths on completion
-- [ ] T360 Test: CLI nonzero exit when an SDK method raises
-- [ ] T361 Impl: `--version`/`--config-dir`/`--run-id` flags
-- [ ] T362 Impl: consistent summary-table formatter
-- [ ] T363 Impl: exit-code mapping (success/failure/constraint)
-- [ ] T364 Verify `airbench all` dry-run prints planned steps
-- [ ] T352 Verify `uv run airbench --help`
-- [ ] T353 Verify each subcommand `--help`
-- [ ] T354 CLI ≤150 lines + ruff clean + commit →commit
+- [x] T335 Test: `test_cli.py` `probe` dispatches to SDK
+- [x] T336 Test: `baseline-oom` dispatches
+- [x] T337 Test: `baseline` dispatches (quant arg)
+- [x] T338 Test: `airllm` dispatches
+- [x] T339 Test: `layered` dispatches
+- [x] T340 Test: `quant-sweep` dispatches
+- [x] T341 Test: `extreme` dispatches
+- [x] T342 Test: `economics` dispatches
+- [x] T343 Test: `figures` dispatches
+- [x] T344 Test: `all` runs full pipeline order
+- [x] T345 Test: bad args → nonzero exit + usage
+- [x] T346 Impl: `cli.py` argparse + subcommand registry
+- [x] T347 Impl: `cli_handlers.py` probe/baseline handlers
+- [x] T348 Impl: airllm/layered/quant/extreme handlers
+- [x] T349 Impl: economics/figures/all handlers
+- [x] T350 Impl: each handler writes artifacts + prints summary table
+- [x] T351 Impl: `main()` entry
+- [x] T355 Test: CLI `--version` prints VERSION (single-source)
+- [x] T356 Test: CLI `--config-dir` overrides config location
+- [x] T357 Test: CLI `--run-id` / auto run-id behavior
+- [x] T358 Test: CLI `baseline --quant Q4_K_M` passes the level through
+- [x] T359 Test: CLI prints artifact paths on completion
+- [x] T360 Test: CLI nonzero exit when an SDK method raises
+- [x] T361 Impl: `--version`/`--config-dir`/`--run-id` flags
+- [x] T362 Impl: consistent summary-table formatter
+- [x] T363 Impl: exit-code mapping (success/failure/constraint)
+- [x] T364 Verify `airbench all` dry-run prints planned steps
+- [x] T352 Verify `uv run airbench --help`
+- [x] T353 Verify each subcommand `--help`
+- [x] T354 CLI ≤150 lines + ruff clean + commit →commit
 
 ## Phase 7 — scripts/ & experiments/
 
-- [ ] T370 Test: `test_download_model.py` routes through gatekeeper (mock)
-- [ ] T371 Test: download writes to weights_dir on SSD
-- [ ] T372 Test: download uses HF_TOKEN for gated model
-- [ ] T373 Test: download fallback model selection from config
-- [ ] T374 Impl: `scripts/download_model.py` gatekeeper-wrapped
-- [ ] T375 Impl: download quant-file selection + gated auth
-- [ ] T376 Test: `test_make_figures.py` fixture results → expected PNG filenames (Agg)
-- [ ] T377 Impl: `scripts/make_figures.py` reads `results/*`
-- [ ] T378 Adapt `scripts/fill_submission_pdf.py` from HW4 for `uoh-sqak-ex05.pdf`
-- [ ] T379 Confirm scripts ≤150 lines
-- [ ] T380 Test: `test_experiments.py` probe wrapper calls SDK (mock)
-- [ ] T381 Test: each experiment wrapper calls matching SDK method
-- [ ] T382 Impl: `experiments/probe.py`
-- [ ] T383 Impl: `experiments/baseline_oom.py`
-- [ ] T384 Impl: `experiments/baseline_llamacpp.py`
-- [ ] T385 Impl: `experiments/airllm_run.py` (+ layered fallback)
-- [ ] T386 Impl: `experiments/quant_sweep.py`
-- [ ] T387 Impl: `experiments/economics_run.py`
-- [ ] T388 Impl: `experiments/extreme_airllm.py`
-- [ ] T389 Grep: experiments import only the SDK
-- [ ] T390 experiments ≤150 lines + ruff clean + commit →commit
+- [x] T370 Test: `test_download_model.py` routes through gatekeeper (mock)
+- [x] T371 Test: download writes to weights_dir on SSD
+- [x] T372 Test: download uses HF_TOKEN for gated model
+- [x] T373 Test: download fallback model selection from config
+- [x] T374 Impl: `scripts/download_model.py` gatekeeper-wrapped
+- [x] T375 Impl: download quant-file selection + gated auth
+- [x] T376 Test: `test_make_figures.py` fixture results → expected PNG filenames (Agg)
+- [x] T377 Impl: `scripts/make_figures.py` reads `results/*`
+- [x] T378 Adapt `scripts/fill_submission_pdf.py` from HW4 for `uoh-sqak-ex05.pdf`
+- [x] T379 Confirm scripts ≤150 lines
+- [x] T380 Test: `test_experiments.py` probe wrapper calls SDK (mock)
+- [x] T381 Test: each experiment wrapper calls matching SDK method
+- [x] T382 Impl: `experiments/probe.py`
+- [x] T383 Impl: `experiments/baseline_oom.py`
+- [x] T384 Impl: `experiments/baseline_llamacpp.py`
+- [x] T385 Impl: `experiments/airllm_run.py` (+ layered fallback)
+- [x] T386 Impl: `experiments/quant_sweep.py`
+- [x] T387 Impl: `experiments/economics_run.py`
+- [x] T388 Impl: `experiments/extreme_airllm.py`
+- [x] T389 Grep: experiments import only the SDK
+- [x] T390 experiments ≤150 lines + ruff clean + commit →commit
 
 ## Phase 8 — Test Sweep & Quality Gates
 
