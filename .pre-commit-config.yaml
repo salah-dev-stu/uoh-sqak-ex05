@@ -1,0 +1,37 @@
+# Keep committed experiment evidence (logs/JSON) byte-exact: don't reformat results/.
+exclude: '^(results/|reports/figures/)'
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: check-file-lines
+        name: check file line limit (<=150 logical)
+        entry: uv run python scripts/check_file_lines.py
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: version-sync
+        name: version single-source sync
+        entry: uv run python scripts/check_version_sync.py
+        language: system
+        pass_filenames: false
+        always_run: true

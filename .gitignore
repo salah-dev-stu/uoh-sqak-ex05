@@ -1,0 +1,33 @@
+# --- Python / tooling ---
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# --- secrets (R11) ---
+.env
+
+# --- model weights: NEVER commit multi-GB weights (H10) ---
+# weights live on the external SSD; only metrics/logs/graphs are committed.
+*.gguf
+*.safetensors
+*.bin
+/Volumes/Backup/
+weights/
+hw5-weights/
+
+# --- course-internal worker files (kept out of the public submission repo) ---
+CLAUDE.md
+IDEA.md
+IDEA-raw.txt
+CONTEXT-lec08-and-spec.md
+RULES.md
+uoh-rl07-ex05-template.docx
+.blender-toolkit/
+.DS_Store
