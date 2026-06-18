@@ -393,24 +393,24 @@
 
 ## Phase 8 — Test Sweep & Quality Gates
 
-- [ ] T400 `uv run pytest --cov` → measure coverage
-- [ ] T401 List uncovered lines; add tests
-- [ ] T402 Reach ≥85% coverage (R9)
-- [ ] T403 `ruff check` → zero failures (R8)
-- [ ] T404 `check_file_lines.py` → all ≤150 (R7)
-- [ ] T405 Run meta-tests (no raw external calls) → green (R3)
-- [ ] T406 Run version-sync tests → green (R5)
-- [ ] T407 Run full suite with network disabled → green
-- [ ] T408 Confirm no GPU/model/key needed (grader Path D)
-- [ ] T411 Per-module coverage check: gatekeeper ≥90%
-- [ ] T412 Per-module coverage check: metrics ≥90%
-- [ ] T413 Per-module coverage check: economics ≥90%
-- [ ] T414 Lint the tests themselves (ruff over tests/)
-- [ ] T415 Fresh-clone smoke: `uv sync` + `uv run pytest` in a clean checkout
-- [ ] T416 Confirm no network access in test run (monkeypatch socket)
-- [ ] T417 Confirm deterministic test run (no flakiness over 3 runs)
-- [ ] T409 Push branch → **GitHub CI green on Python 3.13** (R13)
-- [ ] T410 Add CI badge to README →commit
+- [x] T400 `uv run pytest --cov` → measure coverage
+- [x] T401 List uncovered lines; add tests
+- [x] T402 Reach ≥85% coverage (R9)
+- [x] T403 `ruff check` → zero failures (R8)
+- [x] T404 `check_file_lines.py` → all ≤150 (R7)
+- [x] T405 Run meta-tests (no raw external calls) → green (R3)
+- [x] T406 Run version-sync tests → green (R5)
+- [x] T407 Run full suite with network disabled → green
+- [x] T408 Confirm no GPU/model/key needed (grader Path D)
+- [x] T411 Per-module coverage check: gatekeeper ≥90%
+- [x] T412 Per-module coverage check: metrics ≥90%
+- [x] T413 Per-module coverage check: economics ≥90%
+- [x] T414 Lint the tests themselves (ruff over tests/)
+- [x] T415 Fresh-clone smoke: `uv sync` + `uv run pytest` in a clean checkout
+- [x] T416 Confirm no network access in test run (monkeypatch socket)
+- [x] T417 Confirm deterministic test run (no flakiness over 3 runs)
+- [x] T409 Push branch → **GitHub CI green on Python 3.13** (R13)
+- [x] T410 Add CI badge to README →commit
 
 ## Phase 9 — Real Experiments on the Mac (commit artifacts as produced)
 

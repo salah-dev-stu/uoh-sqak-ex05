@@ -1,5 +1,7 @@
 # EX05 — Running a Massive LLM Locally: AirLLM, Quantization & Performance Benchmarking
 
+[![CI](https://github.com/salah-dev-stu/uoh-sqak-ex05/actions/workflows/ci.yml/badge.svg)](https://github.com/salah-dev-stu/uoh-sqak-ex05/actions/workflows/ci.yml)
+
 > **Course** 203.3763 Orchestration of AI Agents · University of Haifa · Spring 2026 · Dr. Yoram Segal
 > **Authors** Salah Qadah · Andalus Kalash · **Group** `uoh-sqak`
 
