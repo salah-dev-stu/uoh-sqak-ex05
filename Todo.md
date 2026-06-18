@@ -215,53 +215,53 @@
 
 ## Phase 3 — `metrics/`
 
-- [ ] T210 Test: `test_timing.py` first-token timestamp → exact TTFT
-- [ ] T211 Test: subsequent timestamps → exact TPOT mean
-- [ ] T212 Test: TPOT formula `(total-TTFT)/(n-1)`
-- [ ] T213 Test: std across n_runs
-- [ ] T214 Test: warmup run discarded
-- [ ] T215 Test: throughput = output_tokens/total_time
-- [ ] T216 Test: TPOT n=1 edge → None/NaN handled
-- [ ] T217 Impl: `metrics/timing.py` `measure_generation(generate_fn, n_runs, warmup)`
-- [ ] T218 Impl: split Prefill (first) vs Decode (rest) from token-timestamp callback
-- [ ] T219 Impl: `TimingStats` dataclass + mean±std
-- [ ] T220 Impl: `TimingStats.to_dict`
-- [ ] T221 Test: `test_memory.py` parse psutil peak RSS (mock) → MemSample
-- [ ] T222 Test: unified-mem sampler parses fixture `vm_stat`
-- [ ] T223 Test: unified-mem sampler parses fixture `footprint`
-- [ ] T224 Test: memory series peak extraction
-- [ ] T225 Impl: `metrics/memory.py` peak RSS sampler
-- [ ] T226 Impl: unified-memory pressure sampler (subprocess via gatekeeper)
-- [ ] T227 Impl: `MemSample` series + peak
-- [ ] T228 Test: `test_paging.py` swapins delta from two fixture snapshots
-- [ ] T229 Test: swapouts delta
-- [ ] T230 Test: page-fault delta + parse robustness
-- [ ] T231 Impl: `metrics/paging.py` before/after `vm_stat` → deltas
-- [ ] T232 Test: `test_roofline.py` compute-bound case classified
-- [ ] T233 Test: memory-bound case (Decode) classified
-- [ ] T234 Test: arithmetic intensity = FLOPs/Bytes hand-checked
-- [ ] T235 Test: achieved GFLOP/s vs ceiling min(compute, bw·intensity)
-- [ ] T236 Test: ceilings read from `config/hardware.json` (not hardcoded)
-- [ ] T237 Impl: `metrics/roofline.py` classification + ceilings
-- [ ] T238 Impl: model-FLOPs/token estimator (params, layers)
-- [ ] T239 Impl: bytes/token estimator (dtype, KV cache)
-- [ ] T240 Test: `test_aggregate.py` JSON round-trip
-- [ ] T241 Test: CSV round-trip
-- [ ] T242 Impl: `metrics/aggregate.py` JSON writer → `results/`
-- [ ] T243 Impl: CSV writer
-- [ ] T246 Test: timing rejects empty token stream
-- [ ] T247 Test: timing handles single-run (no std → 0/NaN documented)
-- [ ] T248 Test: throughput excludes TTFT when configured
-- [ ] T249 Test: memory sampler returns 0-safe when psutil missing (graceful)
-- [ ] T250 Test: paging parser tolerates locale/format variance in vm_stat
-- [ ] T251 Test: roofline boundary case (intensity exactly at ridge point)
-- [ ] T252 Test: FLOPs/token estimator matches hand calc for 8B dims
-- [ ] T253 Test: bytes/token includes KV-cache growth with context length
-- [ ] T254 Test: aggregate writer creates parent dirs
-- [ ] T255 Test: aggregate is deterministic (stable key order)
-- [ ] T256 Impl: close gaps from T246–T255
-- [ ] T244 Confirm metrics files ≤150 lines
-- [ ] T245 ruff clean + commit: metrics →commit
+- [x] T210 Test: `test_timing.py` first-token timestamp → exact TTFT
+- [x] T211 Test: subsequent timestamps → exact TPOT mean
+- [x] T212 Test: TPOT formula `(total-TTFT)/(n-1)`
+- [x] T213 Test: std across n_runs
+- [x] T214 Test: warmup run discarded
+- [x] T215 Test: throughput = output_tokens/total_time
+- [x] T216 Test: TPOT n=1 edge → None/NaN handled
+- [x] T217 Impl: `metrics/timing.py` `measure_generation(generate_fn, n_runs, warmup)`
+- [x] T218 Impl: split Prefill (first) vs Decode (rest) from token-timestamp callback
+- [x] T219 Impl: `TimingStats` dataclass + mean±std
+- [x] T220 Impl: `TimingStats.to_dict`
+- [x] T221 Test: `test_memory.py` parse psutil peak RSS (mock) → MemSample
+- [x] T222 Test: unified-mem sampler parses fixture `vm_stat`
+- [x] T223 Test: unified-mem sampler parses fixture `footprint`
+- [x] T224 Test: memory series peak extraction
+- [x] T225 Impl: `metrics/memory.py` peak RSS sampler
+- [x] T226 Impl: unified-memory pressure sampler (subprocess via gatekeeper)
+- [x] T227 Impl: `MemSample` series + peak
+- [x] T228 Test: `test_paging.py` swapins delta from two fixture snapshots
+- [x] T229 Test: swapouts delta
+- [x] T230 Test: page-fault delta + parse robustness
+- [x] T231 Impl: `metrics/paging.py` before/after `vm_stat` → deltas
+- [x] T232 Test: `test_roofline.py` compute-bound case classified
+- [x] T233 Test: memory-bound case (Decode) classified
+- [x] T234 Test: arithmetic intensity = FLOPs/Bytes hand-checked
+- [x] T235 Test: achieved GFLOP/s vs ceiling min(compute, bw·intensity)
+- [x] T236 Test: ceilings read from `config/hardware.json` (not hardcoded)
+- [x] T237 Impl: `metrics/roofline.py` classification + ceilings
+- [x] T238 Impl: model-FLOPs/token estimator (params, layers)
+- [x] T239 Impl: bytes/token estimator (dtype, KV cache)
+- [x] T240 Test: `test_aggregate.py` JSON round-trip
+- [x] T241 Test: CSV round-trip
+- [x] T242 Impl: `metrics/aggregate.py` JSON writer → `results/`
+- [x] T243 Impl: CSV writer
+- [x] T246 Test: timing rejects empty token stream
+- [x] T247 Test: timing handles single-run (no std → 0/NaN documented)
+- [x] T248 Test: throughput excludes TTFT when configured
+- [x] T249 Test: memory sampler returns 0-safe when psutil missing (graceful)
+- [x] T250 Test: paging parser tolerates locale/format variance in vm_stat
+- [x] T251 Test: roofline boundary case (intensity exactly at ridge point)
+- [x] T252 Test: FLOPs/token estimator matches hand calc for 8B dims
+- [x] T253 Test: bytes/token includes KV-cache growth with context length
+- [x] T254 Test: aggregate writer creates parent dirs
+- [x] T255 Test: aggregate is deterministic (stable key order)
+- [x] T256 Impl: close gaps from T246–T255
+- [x] T244 Confirm metrics files ≤150 lines
+- [x] T245 ruff clean + commit: metrics →commit
 
 ## Phase 4 — `runners/`
 
