@@ -9,6 +9,7 @@
   "idle_w": 5,
   "active_w": 25,
   "kwh_usd": 0.17,
+  "hours_active_per_day": 8,
   "avg_req_tokens_in": 500,
   "avg_req_tokens_out": 200
 }

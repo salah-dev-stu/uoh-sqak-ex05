@@ -320,19 +320,19 @@
 
 ## Phase 5 — `economics/`
 
-- [ ] T310 Test: `test_economics.py` api_cost provider A token mix hand-checked
-- [ ] T311 Test: api_cost provider B
-- [ ] T312 Test: onprem_annual_cost = capex/years + watts·hours·kwh
-- [ ] T313 Test: break_even requests/day hand-checked
-- [ ] T314 Test: tco_curve monotonic
-- [ ] T315 Test: utilization sensitivity
-- [ ] T316 Impl: `economics/calculator.py` api_cost
-- [ ] T317 Impl: onprem_annual_cost
-- [ ] T318 Impl: break_even
-- [ ] T319 Impl: tco_curve
-- [ ] T320 Impl: `EconomicsReport` dataclass
-- [ ] T321 Impl: JSON writer → `results/economics.json`
-- [ ] T322 Confirm ≤150 lines + ruff clean + commit →commit
+- [x] T310 Test: `test_economics.py` api_cost provider A token mix hand-checked
+- [x] T311 Test: api_cost provider B
+- [x] T312 Test: onprem_annual_cost = capex/years + watts·hours·kwh
+- [x] T313 Test: break_even requests/day hand-checked
+- [x] T314 Test: tco_curve monotonic
+- [x] T315 Test: utilization sensitivity
+- [x] T316 Impl: `economics/calculator.py` api_cost
+- [x] T317 Impl: onprem_annual_cost
+- [x] T318 Impl: break_even
+- [x] T319 Impl: tco_curve
+- [x] T320 Impl: `EconomicsReport` dataclass
+- [x] T321 Impl: JSON writer → `results/economics.json`
+- [x] T322 Confirm ≤150 lines + ruff clean + commit →commit
 
 ## Phase 6 — CLI
 

@@ -38,6 +38,7 @@ _SCHEMA: dict[str, tuple[set[str], set[str]]] = {
             "idle_w",
             "active_w",
             "kwh_usd",
+            "hours_active_per_day",
             "avg_req_tokens_in",
             "avg_req_tokens_out",
         },
