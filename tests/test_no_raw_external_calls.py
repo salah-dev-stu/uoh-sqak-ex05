@@ -23,7 +23,9 @@ FORBIDDEN = [
     ".from_pretrained(",
 ]
 
-ALLOWED_FILES = {"gatekeeper.py", "gatekeeper_types.py"}
+# gatekeeper.py is the chokepoint; loaders.py holds heavy-load closures that ONLY
+# ever execute via gatekeeper.load_model (gated + recorded) — see ADR-003.
+ALLOWED_FILES = {"gatekeeper.py", "gatekeeper_types.py", "loaders.py"}
 
 SRC = Path(airbench.__file__).parent
 

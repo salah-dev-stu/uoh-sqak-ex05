@@ -175,43 +175,43 @@
 
 ## Phase 2 — SDK Façade
 
-- [ ] T170 Test: `test_sdk.py` `BenchSDK(config_dir)` builds config
-- [ ] T171 Test: SDK builds gatekeeper + logger
-- [ ] T172 Test: SDK holds single shared gatekeeper instance
-- [ ] T173 Test: `probe_hardware` delegates (mock)
-- [ ] T174 Test: `run_baseline_oom` delegates
-- [ ] T175 Test: `run_baseline_llamacpp` delegates
-- [ ] T176 Test: `run_airllm` delegates
-- [ ] T177 Test: `run_airllm` falls back to layered on ConstraintReport
-- [ ] T178 Test: `run_layered_demo` delegates
-- [ ] T179 Test: `run_quant_sweep` delegates
-- [ ] T180 Test: `run_extreme` delegates
-- [ ] T181 Test: `compute_economics` delegates
-- [ ] T182 Test: `make_figures` delegates
-- [ ] T183 Impl: `sdk/facade.py` `__init__`
-- [ ] T184 Impl: `probe_hardware`
-- [ ] T185 Impl: `run_baseline_oom`
-- [ ] T186 Impl: `run_baseline_llamacpp(quant)`
-- [ ] T187 Impl: `run_airllm` + layered fallback
-- [ ] T188 Impl: `run_layered_demo`
-- [ ] T189 Impl: `run_quant_sweep`
-- [ ] T190 Impl: `run_extreme`
-- [ ] T191 Impl: `compute_economics`
-- [ ] T192 Impl: `make_figures`
-- [ ] T196 Test: SDK generates a unique run-id + creates `results/<run-id>/` dir
-- [ ] T197 Test: SDK passes run-id-scoped ledger path to gatekeeper
-- [ ] T198 Test: SDK methods write artifacts under the run dir
-- [ ] T199 Test: SDK surfaces ConstraintReport without raising to caller
-- [ ] T200 Test: SDK config_dir=None falls back to repo `config/`
-- [ ] T201 Test: SDK logs start/end of each run method
-- [ ] T202 Impl: run-id + artifact-dir helper
-- [ ] T203 Impl: result-path resolver used by all methods
-- [ ] T204 Impl: error-to-report wrapping in run_airllm/run_extreme
-- [ ] T205 Test: `run_quant_sweep` returns one RunMetrics per level
-- [ ] T206 Impl: aggregation of sweep results into a summary dict
-- [ ] T193 Refactor façade ≤150 lines (helpers/mixins)
-- [ ] T194 Grep: only SDK imported by CLI/experiments (R1)
-- [ ] T195 ruff clean + commit: SDK →commit
+- [x] T170 Test: `test_sdk.py` `BenchSDK(config_dir)` builds config
+- [x] T171 Test: SDK builds gatekeeper + logger
+- [x] T172 Test: SDK holds single shared gatekeeper instance
+- [x] T173 Test: `probe_hardware` delegates (mock)
+- [x] T174 Test: `run_baseline_oom` delegates
+- [x] T175 Test: `run_baseline_llamacpp` delegates
+- [x] T176 Test: `run_airllm` delegates
+- [x] T177 Test: `run_airllm` falls back to layered on ConstraintReport
+- [x] T178 Test: `run_layered_demo` delegates
+- [x] T179 Test: `run_quant_sweep` delegates
+- [x] T180 Test: `run_extreme` delegates
+- [x] T181 Test: `compute_economics` delegates
+- [x] T182 Test: `make_figures` delegates
+- [x] T183 Impl: `sdk/facade.py` `__init__`
+- [x] T184 Impl: `probe_hardware`
+- [x] T185 Impl: `run_baseline_oom`
+- [x] T186 Impl: `run_baseline_llamacpp(quant)`
+- [x] T187 Impl: `run_airllm` + layered fallback
+- [x] T188 Impl: `run_layered_demo`
+- [x] T189 Impl: `run_quant_sweep`
+- [x] T190 Impl: `run_extreme`
+- [x] T191 Impl: `compute_economics`
+- [x] T192 Impl: `make_figures`
+- [x] T196 Test: SDK generates a unique run-id + creates `results/<run-id>/` dir
+- [x] T197 Test: SDK passes run-id-scoped ledger path to gatekeeper
+- [x] T198 Test: SDK methods write artifacts under the run dir
+- [x] T199 Test: SDK surfaces ConstraintReport without raising to caller
+- [x] T200 Test: SDK config_dir=None falls back to repo `config/`
+- [x] T201 Test: SDK logs start/end of each run method
+- [x] T202 Impl: run-id + artifact-dir helper
+- [x] T203 Impl: result-path resolver used by all methods
+- [x] T204 Impl: error-to-report wrapping in run_airllm/run_extreme
+- [x] T205 Test: `run_quant_sweep` returns one RunMetrics per level
+- [x] T206 Impl: aggregation of sweep results into a summary dict
+- [x] T193 Refactor façade ≤150 lines (helpers/mixins)
+- [x] T194 Grep: only SDK imported by CLI/experiments (R1)
+- [x] T195 ruff clean + commit: SDK →commit
 
 ## Phase 3 — `metrics/`
 
