@@ -1,1 +1,6 @@
-{}
+{
+  "max_download_gb": 60.0,
+  "max_subprocess_s": 1800,
+  "max_api_calls": 50,
+  "allow_network": true
+}

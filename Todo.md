@@ -76,102 +76,102 @@
 - [x] T066 `README.md` stub (title, authors, course, WIP)
 - [x] T067 `git init`; set remote `uoh-sqak-ex05`
 - [x] T068 `ruff check` clean on scaffolding
-- [ ] T069 Commit: scaffolding →commit
+- [x] T069 Commit: scaffolding →commit
 
 ## Phase 1 — `shared/` (version, config, logging, gatekeeper, token_meter)
 
-- [ ] T080 Test: `test_version.py` `airbench.__version__ == "1.00"`
-- [ ] T081 Test: version equals importlib.metadata version
-- [ ] T082 Impl: confirm version single-source wiring green (R5)
-- [ ] T083 Test: `test_config.py` `load("models")` returns dict (fixture dir)
-- [ ] T084 Test: `load` honors `AIRBENCH_CONFIG_DIR` env override
-- [ ] T085 Test: `load` raises on missing file
-- [ ] T086 Test: `load` raises on malformed JSON
-- [ ] T087 Impl: `shared/config.py` `load(name)` + env override
-- [ ] T088 Test: `get_model("primary")` returns model dict
-- [ ] T089 Test: `get_model` raises on missing role
-- [ ] T090 Impl: `get_model(role)`
-- [ ] T091 Test+Impl: `get_runtime()`
-- [ ] T092 Test+Impl: `get_economics()`
-- [ ] T093 Test+Impl: `get_budgets()`
-- [ ] T094 Test+Impl: `get_quant_levels()` (ordered)
-- [ ] T095 Test+Impl: `get_hardware()`
-- [ ] T096 Test: required-key validation raises when a key is absent (no defaults) (R10)
-- [ ] T097 Impl: per-config required-key validators
-- [ ] T098 Fill `config/models.json`: primary hf_id **Qwen/Qwen2.5-7B-Instruct (ungated)**
-- [ ] T099 Fill primary params_b=7.62/hidden=3584/layers=28
-- [ ] T100 Fill primary fp16_gb=15.2, gated=false
-- [ ] T101 Fill primary gguf_repo (bartowski/Qwen2.5-7B-Instruct-GGUF) + weights_dir `/Volumes/Backup/hw5-weights`
-- [ ] T102 Fill alternative Llama-3.1-8B-Instruct (gated=true, needs HF_TOKEN+license) — documented, not used by default
-- [ ] T103 Fill extreme 70B (ungated GGUF repo + gguf_file Q4_K_M, size_gb=40)
-- [ ] T103a Test+Impl: `download_model` REFUSES a weights_dir on the internal volume (must be on SSD/`/Volumes`)
-- [ ] T104 Fill `config/quant_levels.json` Q8_0 (gguf_file, approx_gb)
-- [ ] T105 Fill Q5_K_M
-- [ ] T106 Fill Q4_K_M
-- [ ] T107 Fill Q2_K
-- [ ] T108 Fill `config/runtime.json` n_runs=5, warmup=1
-- [ ] T109 Fill runtime max_tokens=64, seed=42
-- [ ] T110 Fill runtime prompt set (deterministic)
-- [ ] T111 Fill runtime ctx_sizes [512,2048,8192] + timeout_s + llamacpp_bin
-- [ ] T111a Fill runtime `perplexity_corpus` path + `red_line_ppl_delta` threshold + `airllm_timebox_min` (45–60)
-- [ ] T112 Fill `config/economics.json` API providers (usd_per_1m_in/out)
-- [ ] T113 Fill economics CAPEX (Mac + SSD) + amortize_years=3
-- [ ] T114 Fill economics idle_w, active_w, kwh_usd
-- [ ] T115 Fill economics avg_req_tokens_in/out
-- [ ] T116 Fill `config/budgets.json` max_download_gb, max_subprocess_s
-- [ ] T117 Fill budgets max_api_calls, allow_network=true
-- [ ] T118 Fill `config/hardware.json` M2 GPU peak GFLOP/s (FP16)
-- [ ] T119 Fill hardware unified-memory bandwidth GB/s
-- [ ] T120 Fill hardware SSD read/write MB/s (measured ~498/358)
-- [ ] T121 Fill hardware cores (4P+4E), RAM_gb=8
-- [ ] T122 Test: `test_logging.py` level from env
-- [ ] T123 Test: logging no duplicate handlers
-- [ ] T124 Impl: `shared/logging_config.py` (adapt HW4)
-- [ ] T125 Impl: `GateEvent` dataclass (ts, label, kind, dur, bytes, ok)
-- [ ] T126 Impl: `RunResult` dataclass
-- [ ] T127 Impl: `BudgetExceeded` exception
-- [ ] T128 Test: `test_gatekeeper.py` `download` happy path records GateEvent (mock hf)
-- [ ] T129 Test: download writes to dest path
-- [ ] T130 Test: download denies size > max_download_gb → BudgetExceeded
-- [ ] T131 Test: `run_subprocess` records duration
-- [ ] T132 Test: run_subprocess records exit code + stdout tail
-- [ ] T133 Test: run_subprocess enforces timeout → records timeout event
-- [ ] T134 Test: `load_model` wraps callable, records label+duration
-- [ ] T135 Test: load_model propagates load error cleanly
-- [ ] T136 Test: `api_call` counts against max_api_calls
-- [ ] T137 Test: api_call denies over budget → BudgetExceeded
-- [ ] T138 Test: `allow_network=false` denies download + api_call
-- [ ] T139 Test: ledger persisted to `results/<run>/gate_ledger.json` (atomic write)
-- [ ] T140 Test: ledger property returns events in order
-- [ ] T141 Impl: `ApiGatekeeper.__init__(budgets, ledger_path)`
-- [ ] T142 Impl: `download`
-- [ ] T143 Impl: `run_subprocess`
-- [ ] T144 Impl: `load_model`
-- [ ] T145 Impl: `api_call`
-- [ ] T146 Impl: `record` + atomic ledger write
-- [ ] T147 Impl: `ledger` property
-- [ ] T148 Refactor: split IO helpers to `gatekeeper_io.py` if >150 lines (R7)
-- [ ] T149 **Meta-test** `test_no_raw_external_calls.py`: grep src for `subprocess`
-- [ ] T150 Meta-test: grep for `requests`/`urllib`
-- [ ] T151 Meta-test: grep for `hf_hub_download`/`snapshot_download`
-- [ ] T152 Meta-test: grep for raw `.from_pretrained`/`AutoModel(` outside gatekeeper (R3)
-- [ ] T153 Reuse `shared/token_meter.py` from HW4
-- [ ] T154 Test: `test_token_meter.py` counts tokens on fixture text
-- [ ] T158 Test: config rejects extra/unknown top-level key (strict schema)
-- [ ] T159 Test: `get_quant_levels` preserves declared order Q8→Q5→Q4→Q2
-- [ ] T160 Test: gatekeeper ledger entry JSON schema (keys + types)
-- [ ] T161 Test: gatekeeper run-id is unique per SDK session
-- [ ] T162 Test: download records bytes-in; api_call records bytes-out
-- [ ] T163 Test: BudgetExceeded message names the violated budget
-- [ ] T164 Test: ledger survives append across multiple calls (no overwrite)
-- [ ] T165 Test: gatekeeper redacts HF_TOKEN/API key from ledger + logs (R11)
-- [ ] T166 Impl: token/secret redaction in record()
-- [ ] T167 Test: token_meter handles empty + unicode text
-- [ ] T168 Test: config path resolution relative vs absolute
-- [ ] T169 Impl: close any gaps surfaced by T158–T168
-- [ ] T155 Confirm all Phase-1 files ≤150 lines
-- [ ] T156 ruff clean Phase 1
-- [ ] T157 Commit: shared layer →commit
+- [x] T080 Test: `test_version.py` `airbench.__version__ == "1.00"`
+- [x] T081 Test: version equals importlib.metadata version
+- [x] T082 Impl: confirm version single-source wiring green (R5)
+- [x] T083 Test: `test_config.py` `load("models")` returns dict (fixture dir)
+- [x] T084 Test: `load` honors `AIRBENCH_CONFIG_DIR` env override
+- [x] T085 Test: `load` raises on missing file
+- [x] T086 Test: `load` raises on malformed JSON
+- [x] T087 Impl: `shared/config.py` `load(name)` + env override
+- [x] T088 Test: `get_model("primary")` returns model dict
+- [x] T089 Test: `get_model` raises on missing role
+- [x] T090 Impl: `get_model(role)`
+- [x] T091 Test+Impl: `get_runtime()`
+- [x] T092 Test+Impl: `get_economics()`
+- [x] T093 Test+Impl: `get_budgets()`
+- [x] T094 Test+Impl: `get_quant_levels()` (ordered)
+- [x] T095 Test+Impl: `get_hardware()`
+- [x] T096 Test: required-key validation raises when a key is absent (no defaults) (R10)
+- [x] T097 Impl: per-config required-key validators
+- [x] T098 Fill `config/models.json`: primary hf_id **Qwen/Qwen2.5-7B-Instruct (ungated)**
+- [x] T099 Fill primary params_b=7.62/hidden=3584/layers=28
+- [x] T100 Fill primary fp16_gb=15.2, gated=false
+- [x] T101 Fill primary gguf_repo (bartowski/Qwen2.5-7B-Instruct-GGUF) + weights_dir `/Volumes/Backup/hw5-weights`
+- [x] T102 Fill alternative Llama-3.1-8B-Instruct (gated=true, needs HF_TOKEN+license) — documented, not used by default
+- [x] T103 Fill extreme 70B (ungated GGUF repo + gguf_file Q4_K_M, size_gb=40)
+- [x] T103a Test+Impl: `download_model` REFUSES a weights_dir on the internal volume (must be on SSD/`/Volumes`)
+- [x] T104 Fill `config/quant_levels.json` Q8_0 (gguf_file, approx_gb)
+- [x] T105 Fill Q5_K_M
+- [x] T106 Fill Q4_K_M
+- [x] T107 Fill Q2_K
+- [x] T108 Fill `config/runtime.json` n_runs=5, warmup=1
+- [x] T109 Fill runtime max_tokens=64, seed=42
+- [x] T110 Fill runtime prompt set (deterministic)
+- [x] T111 Fill runtime ctx_sizes [512,2048,8192] + timeout_s + llamacpp_bin
+- [x] T111a Fill runtime `perplexity_corpus` path + `red_line_ppl_delta` threshold + `airllm_timebox_min` (45–60)
+- [x] T112 Fill `config/economics.json` API providers (usd_per_1m_in/out)
+- [x] T113 Fill economics CAPEX (Mac + SSD) + amortize_years=3
+- [x] T114 Fill economics idle_w, active_w, kwh_usd
+- [x] T115 Fill economics avg_req_tokens_in/out
+- [x] T116 Fill `config/budgets.json` max_download_gb, max_subprocess_s
+- [x] T117 Fill budgets max_api_calls, allow_network=true
+- [x] T118 Fill `config/hardware.json` M2 GPU peak GFLOP/s (FP16)
+- [x] T119 Fill hardware unified-memory bandwidth GB/s
+- [x] T120 Fill hardware SSD read/write MB/s (measured ~498/358)
+- [x] T121 Fill hardware cores (4P+4E), RAM_gb=8
+- [x] T122 Test: `test_logging.py` level from env
+- [x] T123 Test: logging no duplicate handlers
+- [x] T124 Impl: `shared/logging_config.py` (adapt HW4)
+- [x] T125 Impl: `GateEvent` dataclass (ts, label, kind, dur, bytes, ok)
+- [x] T126 Impl: `RunResult` dataclass
+- [x] T127 Impl: `BudgetExceeded` exception
+- [x] T128 Test: `test_gatekeeper.py` `download` happy path records GateEvent (mock hf)
+- [x] T129 Test: download writes to dest path
+- [x] T130 Test: download denies size > max_download_gb → BudgetExceeded
+- [x] T131 Test: `run_subprocess` records duration
+- [x] T132 Test: run_subprocess records exit code + stdout tail
+- [x] T133 Test: run_subprocess enforces timeout → records timeout event
+- [x] T134 Test: `load_model` wraps callable, records label+duration
+- [x] T135 Test: load_model propagates load error cleanly
+- [x] T136 Test: `api_call` counts against max_api_calls
+- [x] T137 Test: api_call denies over budget → BudgetExceeded
+- [x] T138 Test: `allow_network=false` denies download + api_call
+- [x] T139 Test: ledger persisted to `results/<run>/gate_ledger.json` (atomic write)
+- [x] T140 Test: ledger property returns events in order
+- [x] T141 Impl: `ApiGatekeeper.__init__(budgets, ledger_path)`
+- [x] T142 Impl: `download`
+- [x] T143 Impl: `run_subprocess`
+- [x] T144 Impl: `load_model`
+- [x] T145 Impl: `api_call`
+- [x] T146 Impl: `record` + atomic ledger write
+- [x] T147 Impl: `ledger` property
+- [x] T148 Refactor: split IO helpers to `gatekeeper_io.py` if >150 lines (R7)
+- [x] T149 **Meta-test** `test_no_raw_external_calls.py`: grep src for `subprocess`
+- [x] T150 Meta-test: grep for `requests`/`urllib`
+- [x] T151 Meta-test: grep for `hf_hub_download`/`snapshot_download`
+- [x] T152 Meta-test: grep for raw `.from_pretrained`/`AutoModel(` outside gatekeeper (R3)
+- [x] T153 Reuse `shared/token_meter.py` from HW4
+- [x] T154 Test: `test_token_meter.py` counts tokens on fixture text
+- [x] T158 Test: config rejects extra/unknown top-level key (strict schema)
+- [x] T159 Test: `get_quant_levels` preserves declared order Q8→Q5→Q4→Q2
+- [x] T160 Test: gatekeeper ledger entry JSON schema (keys + types)
+- [x] T161 Test: gatekeeper run-id is unique per SDK session
+- [x] T162 Test: download records bytes-in; api_call records bytes-out
+- [x] T163 Test: BudgetExceeded message names the violated budget
+- [x] T164 Test: ledger survives append across multiple calls (no overwrite)
+- [x] T165 Test: gatekeeper redacts HF_TOKEN/API key from ledger + logs (R11)
+- [x] T166 Impl: token/secret redaction in record()
+- [x] T167 Test: token_meter handles empty + unicode text
+- [x] T168 Test: config path resolution relative vs absolute
+- [x] T169 Impl: close any gaps surfaced by T158–T168
+- [x] T155 Confirm all Phase-1 files ≤150 lines
+- [x] T156 ruff clean Phase 1
+- [x] T157 Commit: shared layer →commit
 
 ## Phase 2 — SDK Façade
 

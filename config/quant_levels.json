@@ -1,1 +1,8 @@
-{}
+{
+  "levels": [
+    { "name": "Q8_0",   "gguf_file": "Qwen2.5-7B-Instruct-Q8_0.gguf",   "approx_gb": 8.1, "bits": 8 },
+    { "name": "Q5_K_M", "gguf_file": "Qwen2.5-7B-Instruct-Q5_K_M.gguf", "approx_gb": 5.4, "bits": 5 },
+    { "name": "Q4_K_M", "gguf_file": "Qwen2.5-7B-Instruct-Q4_K_M.gguf", "approx_gb": 4.7, "bits": 4 },
+    { "name": "Q2_K",   "gguf_file": "Qwen2.5-7B-Instruct-Q2_K.gguf",   "approx_gb": 3.0, "bits": 2 }
+  ]
+}

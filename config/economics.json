@@ -1,1 +1,14 @@
-{}
+{
+  "api_providers": [
+    { "name": "gpt-4o-mini",   "usd_per_1m_in": 0.15, "usd_per_1m_out": 0.60 },
+    { "name": "claude-haiku",  "usd_per_1m_in": 0.80, "usd_per_1m_out": 4.00 }
+  ],
+  "hardware_capex_usd": 1199,
+  "ssd_capex_usd": 90,
+  "amortize_years": 3,
+  "idle_w": 5,
+  "active_w": 25,
+  "kwh_usd": 0.17,
+  "avg_req_tokens_in": 500,
+  "avg_req_tokens_out": 200
+}

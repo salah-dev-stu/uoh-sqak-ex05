@@ -1,1 +1,18 @@
-{}
+{
+  "n_runs": 5,
+  "warmup": 1,
+  "max_tokens": 64,
+  "seed": 42,
+  "prompts": [
+    "Explain what a transformer neural network is in two sentences.",
+    "List three causes of the French Revolution.",
+    "Write a short haiku about virtual memory."
+  ],
+  "ctx_sizes": [512, 2048, 8192],
+  "timeout_s": 1800,
+  "llamacpp_bin": "llama-cli",
+  "llamacpp_perplexity_bin": "llama-perplexity",
+  "perplexity_corpus": "results/corpus/wiki.test.raw",
+  "red_line_ppl_delta": 0.5,
+  "airllm_timebox_min": 60
+}
