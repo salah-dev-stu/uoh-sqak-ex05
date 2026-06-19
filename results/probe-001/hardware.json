@@ -1,0 +1,23 @@
+{
+  "cpu_logical": 8,
+  "curated": {
+    "chip": "Apple M2",
+    "cpu_cores": 8,
+    "eff_cores": 4,
+    "gpu_cores": 8,
+    "gpu_peak_gflops_fp16": 2840,
+    "model_identifier": "Mac14,2",
+    "notes": "GPU peak is the nominal M2 8-core figure (~2.84 TFLOPS FP32); used as the Roofline compute ceiling. Memory bandwidth 100 GB/s is the M2 unified-memory spec. SSD throughput measured via dd.",
+    "perf_cores": 4,
+    "ram_gb": 8,
+    "ssd_read_mbps": 498,
+    "ssd_write_mbps": 358,
+    "unified_mem_bandwidth_gbps": 100,
+    "weights_volume": "/Volumes/Backup"
+  },
+  "machine": "arm64",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "python": "3.13.12",
+  "ram_available_gb": 1.41,
+  "ram_total_gb": 8.59
+}

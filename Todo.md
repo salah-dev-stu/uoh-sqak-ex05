@@ -414,10 +414,10 @@
 
 ## Phase 9 — Real Experiments on the Mac (commit artifacts as produced)
 
-- [ ] T420 `airbench probe` → `results/hardware.json` (H1)
-- [ ] T421 Verify hardware.json matches measured spec (8GB/M2)
-- [ ] T422 Verify SSD entry (489GB @ ~498/358) in hardware.json
-- [ ] T423 Commit hardware.json →commit
+- [x] T420 `airbench probe` → `results/hardware.json` (H1)
+- [x] T421 Verify hardware.json matches measured spec (8GB/M2)
+- [x] T422 Verify SSD entry (489GB @ ~498/358) in hardware.json
+- [x] T423 Commit hardware.json →commit
 - [ ] T424 Primary Qwen2.5-7B is ungated — confirm download needs NO HF_TOKEN (no manual web step)
 - [ ] T425 (Only if using the Llama alternative) put HF_TOKEN in `.env` + accept license — otherwise skip
 - [ ] T426 `airbench baseline-oom` → HF FP16 load on the Mac
