@@ -476,54 +476,54 @@
 
 ## Phase 11 — Report, README, Diagrams
 
-- [ ] T490 `diagrams/class_diagram.mmd` (SDK, Gatekeeper, runners, metrics, economics) (R2)
-- [ ] T491 `diagrams/block_diagram.mmd` data-flow
-- [ ] T492 Render diagrams to PNG/SVG
-- [ ] T493 Report §Hardware (from hardware.json) (H1)
-- [ ] T494 Report §Model justification: params/format/FP16-size vs 8GB (H1/5.1)
-- [ ] T495 Report §Baseline failure narrative + logs (H2)
-- [ ] T496 Report §Bottleneck diagnosis: memory-bound evidence (H2)
-- [ ] T497 Report §Roofline analysis (compute vs memory bound) (H8)
-- [ ] T498 Report §AirLLM constraint (Apple-Silicon/CUDA) (H3)
-- [ ] T499 Report §Layered streaming mechanism (H3)
-- [ ] T500 Report §Virtual-memory/paging mapping (H8)
-- [ ] T501 Report §Quantization sweep + memory/speed/quality (H4)
-- [ ] T502 Report §Accuracy red line discussion (H4)
-- [ ] T503 Report §TTFT vs TPOT (Prefill/Decode), mean±std (H5)
-- [ ] T504 Report §Throughput/latency price on modest hardware (§4)
-- [ ] T505 Report §Economics API vs On-Prem + break-even + TCO (H7)
-- [ ] T506 Report §Economics sensitivity analysis (H7)
-- [ ] T507 Report §Original extensions (70B, Pareto, context-length) (H9)
-- [ ] T508 Report §Honest negative results
-- [ ] T509 `reports/research_questions.md` §4 Q1 (bottleneck: memory or compute, how identified)
-- [ ] T510 research_questions §4 Q2 (AirLLM resource allocation ↔ paging)
-- [ ] T511 research_questions §4 Q3 (quantization mem/speed/quality, red line)
-- [ ] T512 research_questions §4 Q4 (Prefill/Decode ↔ TTFT/TPOT)
-- [ ] T513 research_questions §4 Q5 (throughput/latency price)
-- [ ] T514 research_questions §4 Q6 (when is local worth it vs API)
-- [ ] T515 Link each research answer to its evidence file (H11)
-- [ ] T516 README §Overview + course/instructor/authors
-- [ ] T517 README §Hardware table
-- [ ] T518 README §Install (`uv sync`) + heavy extra + HF token note
-- [ ] T519 README §Reproduce each experiment (every `airbench` command)
+- [x] T490 `diagrams/class_diagram.mmd` (SDK, Gatekeeper, runners, metrics, economics) (R2)
+- [x] T491 `diagrams/block_diagram.mmd` data-flow
+- [x] T492 Render diagrams to PNG/SVG
+- [x] T493 Report §Hardware (from hardware.json) (H1)
+- [x] T494 Report §Model justification: params/format/FP16-size vs 8GB (H1/5.1)
+- [x] T495 Report §Baseline failure narrative + logs (H2)
+- [x] T496 Report §Bottleneck diagnosis: memory-bound evidence (H2)
+- [x] T497 Report §Roofline analysis (compute vs memory bound) (H8)
+- [x] T498 Report §AirLLM constraint (Apple-Silicon/CUDA) (H3)
+- [x] T499 Report §Layered streaming mechanism (H3)
+- [x] T500 Report §Virtual-memory/paging mapping (H8)
+- [x] T501 Report §Quantization sweep + memory/speed/quality (H4)
+- [x] T502 Report §Accuracy red line discussion (H4)
+- [x] T503 Report §TTFT vs TPOT (Prefill/Decode), mean±std (H5)
+- [x] T504 Report §Throughput/latency price on modest hardware (§4)
+- [x] T505 Report §Economics API vs On-Prem + break-even + TCO (H7)
+- [x] T506 Report §Economics sensitivity analysis (H7)
+- [x] T507 Report §Original extensions (70B, Pareto, context-length) (H9)
+- [x] T508 Report §Honest negative results
+- [x] T509 `reports/research_questions.md` §4 Q1 (bottleneck: memory or compute, how identified)
+- [x] T510 research_questions §4 Q2 (AirLLM resource allocation ↔ paging)
+- [x] T511 research_questions §4 Q3 (quantization mem/speed/quality, red line)
+- [x] T512 research_questions §4 Q4 (Prefill/Decode ↔ TTFT/TPOT)
+- [x] T513 research_questions §4 Q5 (throughput/latency price)
+- [x] T514 research_questions §4 Q6 (when is local worth it vs API)
+- [x] T515 Link each research answer to its evidence file (H11)
+- [x] T516 README §Overview + course/instructor/authors
+- [x] T517 README §Hardware table
+- [x] T518 README §Install (`uv sync`) + heavy extra + HF token note
+- [x] T519 README §Reproduce each experiment (every `airbench` command)
 - [ ] T520 README embed figures (ttft/tpot/throughput/memory)
 - [ ] T521 README embed roofline + pareto + breakeven figures
 - [ ] T522 README §Results summary + key findings
-- [ ] T523 README §References (HF model, AirLLM, llama.cpp, Ollama, Lec 08)
-- [ ] T524 README §Acknowledgments (co-authors, course staff)
-- [ ] T525 README CI badge + repo structure
-- [ ] T526 README class-diagram embed (R2)
-- [ ] T527 Cross-check README vs spec §8 checklist (all items present)
-- [ ] T529 `docs/adr/ADR-001-model-choice.md` (Qwen2.5-7B primary + why too big for 8GB; Llama-3.1 gated alternative)
-- [ ] T530 `docs/adr/ADR-002-airllm-honest-path.md` (CUDA constraint + layered equivalent)
-- [ ] T531 `docs/adr/ADR-003-gatekeeper-design.md` (wired-for-real, gate+record)
-- [ ] T532 `docs/adr/ADR-004-serial-quant-sweep.md` (download→bench→delete rationale)
-- [ ] T533 `docs/adr/ADR-005-ssd-streaming.md` (external SSD as weight+stream source)
-- [ ] T534 `docs/adr/ADR-006-mock-strategy.md` (grader Path D, no GPU/model/key)
-- [ ] T535 `docs/adr/ADR-007-metrics-methodology.md` (TTFT/TPOT split, N≥5, mean±std)
-- [ ] T536 `docs/adr/ADR-008-economics-assumptions.md` (CAPEX/OPEX/break-even inputs)
-- [ ] T537 Link ADRs from README + technical_report
-- [ ] T538 `docs/prd/` per-mechanism mini-PRDs (baseline, airllm, quant, economics)
+- [x] T523 README §References (HF model, AirLLM, llama.cpp, Ollama, Lec 08)
+- [x] T524 README §Acknowledgments (co-authors, course staff)
+- [x] T525 README CI badge + repo structure
+- [x] T526 README class-diagram embed (R2)
+- [x] T527 Cross-check README vs spec §8 checklist (all items present)
+- [x] T529 `docs/adr/ADR-001-model-choice.md` (Qwen2.5-7B primary + why too big for 8GB; Llama-3.1 gated alternative)
+- [x] T530 `docs/adr/ADR-002-airllm-honest-path.md` (CUDA constraint + layered equivalent)
+- [x] T531 `docs/adr/ADR-003-gatekeeper-design.md` (wired-for-real, gate+record)
+- [x] T532 `docs/adr/ADR-004-serial-quant-sweep.md` (download→bench→delete rationale)
+- [x] T533 `docs/adr/ADR-005-ssd-streaming.md` (external SSD as weight+stream source)
+- [x] T534 `docs/adr/ADR-006-mock-strategy.md` (grader Path D, no GPU/model/key)
+- [x] T535 `docs/adr/ADR-007-metrics-methodology.md` (TTFT/TPOT split, N≥5, mean±std)
+- [x] T536 `docs/adr/ADR-008-economics-assumptions.md` (CAPEX/OPEX/break-even inputs)
+- [x] T537 Link ADRs from README + technical_report
+- [x] T538 `docs/prd/` per-mechanism mini-PRDs (baseline, airllm, quant, economics)
 - [ ] T528 Commit report+README+diagrams+ADRs →commit
 
 ## Phase 12 — Extension: Extreme 70B AirLLM + Context Sweep

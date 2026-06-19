@@ -1,0 +1,87 @@
+%% airbench — OOP class diagram (R2). Render: mermaid.live or `mmdc -i class_diagram.mmd -o class_diagram.svg`
+classDiagram
+    class BenchSDK {
+        +run_id: str
+        +results_dir: Path
+        +gatekeeper: ApiGatekeeper
+        +probe_hardware() dict
+        +run_baseline_oom() FailureReport
+        +run_baseline_llamacpp(path, quant) RunMetrics
+        +run_layered_demo(...) LayeredMetrics
+        +run_airllm(generate) RunMetrics|ConstraintReport
+        +run_quant_sweep(...) dict
+        +run_extreme(generate) RunMetrics|ConstraintReport
+        +compute_economics() dict
+        +make_figures() list~Path~
+    }
+    class ApiGatekeeper {
+        +budgets: dict
+        +ledger: list~GateEvent~
+        +download(repo, file, dest) Path
+        +run_subprocess(argv) RunResult
+        +load_model(loader, label) Any
+        +api_call(fn, label) Any
+        +record(event) None
+    }
+    class GateEvent {
+        +label: str
+        +kind: str
+        +duration_s: float
+        +ok: bool
+        +to_dict() dict
+    }
+    class RunResult {
+        +returncode: int
+        +stdout_tail: str
+        +timed_out: bool
+    }
+    class RunMetrics {
+        +label: str
+        +ttft_s: float
+        +tpot_s: float
+        +throughput_tps: float
+        +peak_mem_mb: float
+    }
+    class FailureReport {
+        +error_type: str
+        +diagnosis: str
+        +peak_mem_mb: float
+    }
+    class ConstraintReport {
+        +reason: str
+        +platform: str
+        +fallback: str
+    }
+    class LayeredMetrics {
+        +n_layers: int
+        +io_s: list
+        +compute_s: list
+        +total_io_s: float
+    }
+    class TimingStats {
+        +runs: list~RunTiming~
+        +summary() dict
+    }
+    class RooflinePoint {
+        +intensity: float
+        +achieved_gflops: float
+        +bound: str
+    }
+    class Config {
+        <<module>>
+        +load(name) dict
+        +get_model(role) dict
+        +get_runtime() dict
+        +get_hardware() dict
+    }
+
+    BenchSDK *-- ApiGatekeeper : owns
+    BenchSDK ..> Config : reads
+    ApiGatekeeper *-- GateEvent : records
+    ApiGatekeeper ..> RunResult : returns
+    BenchSDK ..> RunMetrics : produces
+    BenchSDK ..> FailureReport : produces
+    BenchSDK ..> ConstraintReport : produces
+    BenchSDK ..> LayeredMetrics : produces
+    BenchSDK ..> TimingStats : uses
+    BenchSDK ..> RooflinePoint : uses

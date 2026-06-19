@@ -1,0 +1,21 @@
+%% airbench — data-flow / block diagram. Every external call funnels through the Gatekeeper (R3).
+flowchart TD
+    CLI["airbench CLI / experiments/*.py"] --> SDK["BenchSDK (SDK façade, R1)"]
+    CFG[("config/*.json<br/>models · quant · runtime<br/>economics · budgets · hardware")] -.reads.-> SDK
+
+    SDK --> RUN["runners/<br/>baseline_oom · baseline_llamacpp<br/>layered · airllm · quant_sweep · extreme"]
+    SDK --> MET["metrics/<br/>timing(TTFT/TPOT) · memory<br/>paging · roofline · aggregate"]
+    SDK --> ECON["economics/<br/>API vs On-Prem · break-even · TCO"]
+    SDK --> FIG["figures.py<br/>(matplotlib, Agg)"]
+
+    RUN --> GK{{"ApiGatekeeper<br/>gate + record (R3)"}}
+    GK -->|download| HF["Hugging Face Hub<br/>(GGUF weights → SSD)"]
+    GK -->|subprocess| LCPP["llama.cpp<br/>llama-cli / llama-perplexity"]
+    GK -->|load_model| AIR["AirLLM / transformers<br/>(in-process load)"]
+    GK -->|api_call| API["API price lookup (§5.5)"]
+    GK --> LED[("results/<run>/gate_ledger.json<br/>audit trail")]
+
+    MET --> RES[("results/<run>/*.json<br/>committed evidence")]
+    ECON --> RES
+    FIG --> FIGS[("reports/figures/*.png")]
+    RES --> FIG
