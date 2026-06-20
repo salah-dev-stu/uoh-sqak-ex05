@@ -36,3 +36,7 @@ uoh-rl07-ex05-template.docx
 uoh-sqak-ex05.docx
 uoh-sqak-ex05.pdf
 CONTEXT-lecture-08.md
+.playwright-mcp/
+*.playwright-mcp
+readme-full.png
+architecture-rendered.png
