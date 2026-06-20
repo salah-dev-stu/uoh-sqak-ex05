@@ -31,3 +31,8 @@ RULES.md
 uoh-rl07-ex05-template.docx
 .blender-toolkit/
 .DS_Store
+
+# generated submission cover sheet (regenerate via scripts/fill_submission_pdf.py)
+uoh-sqak-ex05.docx
+uoh-sqak-ex05.pdf
+CONTEXT-lecture-08.md

@@ -11,8 +11,8 @@ from airbench.shared.version import VERSION
 
 
 def test_version_literal():
-    assert airbench.__version__ == "1.00"
-    assert VERSION == "1.00"
+    assert airbench.__version__ == "1.10"
+    assert VERSION == "1.10"
 
 
 def test_version_matches_installed_metadata():

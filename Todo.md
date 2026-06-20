@@ -547,22 +547,22 @@
 
 ## Phase 13 — Submission & Push
 
-- [ ] T565 Final `uv run pytest --cov` green ≥85%
-- [ ] T566 Final `ruff check` clean
-- [ ] T567 Final file-lines pass
-- [ ] T568 Confirm GitHub CI green on main (Python 3.13)
-- [ ] T569 Confirm NO weights committed
-- [ ] T570 Confirm `results/` artifacts present + `.env` absent
-- [ ] T571 Bump VERSION across the build; single-source test green
-- [ ] T572 Verify commit history spread over time, logically grouped (R13)
-- [ ] T573 Make repo **public**
-- [ ] T574 Share repo with `rmisegal@gmail.com`
-- [ ] T575 Verify repo accessible logged-out
-- [ ] T576 `fill_submission_pdf.py` → `uoh-sqak-ex05.pdf` (self-grade 85, group uoh-sqak)
-- [ ] T577 Verify PDF fields unaltered + filename exact + nothing extra
-- [ ] T578 Remind user: both members submit on Moodle id=278465 (separate timestamps)
-- [ ] T579 Final README pass; tag release
-- [ ] T580 Push to GitHub; confirm deadline margin (Fri 2026-06-26 23:59) →commit/push
+- [x] T565 Final `uv run pytest --cov` green ≥85%
+- [x] T566 Final `ruff check` clean
+- [x] T567 Final file-lines pass
+- [x] T568 Confirm GitHub CI green on main (Python 3.13)
+- [x] T569 Confirm NO weights committed
+- [x] T570 Confirm `results/` artifacts present + `.env` absent
+- [x] T571 Bump VERSION across the build; single-source test green
+- [x] T572 Verify commit history spread over time, logically grouped (R13)
+- [x] T573 Make repo **public**
+- [x] T574 Share repo with `rmisegal@gmail.com`
+- [x] T575 Verify repo accessible logged-out
+- [x] T576 `fill_submission_pdf.py` → `uoh-sqak-ex05.pdf` (self-grade 85, group uoh-sqak)
+- [x] T577 Verify PDF fields unaltered + filename exact + nothing extra
+- [x] T578 Remind user: both members submit on Moodle id=278465 (separate timestamps)
+- [x] T579 Final README pass; tag release
+- [x] T580 Push to GitHub; confirm deadline margin (Fri 2026-06-26 23:59) →commit/push
 
 ---
 

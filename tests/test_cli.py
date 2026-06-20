@@ -90,7 +90,7 @@ def test_version_flag(capsys):
     with pytest.raises(SystemExit) as e:
         cli.main(["--version"])
     assert e.value.code == 0
-    assert "1.00" in capsys.readouterr().out
+    assert "1.10" in capsys.readouterr().out
 
 
 def test_unknown_command_exits():
