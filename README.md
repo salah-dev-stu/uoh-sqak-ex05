@@ -68,12 +68,30 @@ uv run python scripts/make_figures.py --results results/<run>   # 5.4/5.6 graphs
 
 (Global flags go before the subcommand, e.g. `uv run airbench --run-id demo economics`.)
 
-## Results summary
+## Results summary (real, measured on the 8 GB M2)
 
-_Filled from the committed `results/` artifacts after the on-device runs; the harness that produces
-them is complete and tested. Key figures will appear in [`reports/figures/`](reports/figures) and be
-embedded here (TTFT, TPOT, throughput-vs-quant, peak-memory, latency breakdown, Roofline, quant Pareto,
-break-even)._
+**The headline:** on 8 GB you either run **fast and crash** or **safe and crawl** — the memory wall, no
+free lunch. Benchmarked with `llama-bench` (Metal) on Qwen2.5-7B Q4_K_M (`results/real/baseline_q4.json`):
+
+| Regime | Prefill | Decode | Stable? |
+|---|---|---|---|
+| GPU + RAM (`-ngl 99 -mmp 0`) | **130.9 ± 12.4 tok/s** | **17.6 ± 0.27 tok/s** | ❌ **froze the Mac** (4.4 GB resident on 8 GB) |
+| CPU + mmap (`-ngl 0 -mmp 1`) | 0.75 ± 0.03 tok/s | **< 0.03 tok/s** | ✅ stable but unusable (USB paging per token) |
+
+Decode collapses **17.6 → <0.03 tok/s (>500×)** the moment weights must page from disk — the memory-bound /
+paging result the lecture predicts. Both points sit far below the M2 compute ceiling (Roofline §6), i.e.
+neither is compute-limited. **Economics:** On-Prem ≈ **$442/yr**, break-even **6,211 req/day** vs
+gpt-4o-mini — but the memory wall caps this Mac at a few hundred req/day, so the API wins decisively
+($0 was actually spent — the comparison uses published list prices). **AirLLM** is CUDA/MLX-centric and
+does not run cleanly here ([`reports/airllm_constraint.md`](reports/airllm_constraint.md)); the layered
+streaming demo stands in.
+
+![decode](reports/figures/decode_throughput.png)
+![prefill](reports/figures/prefill_throughput.png)
+![roofline](reports/figures/roofline.png)
+![break-even](reports/figures/breakeven.png)
+
+Full analysis: [`reports/technical_report.md`](reports/technical_report.md).
 
 ## Repo structure
 

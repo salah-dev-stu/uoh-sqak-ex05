@@ -42,10 +42,20 @@ peak-memory trace at failure, and a diagnosis are captured to `results/baseline/
 sustained compute — it dies allocating weights. Evidence: weight bytes (15.2 GB) > capacity (8 GB);
 memory pressure goes red before tokens are produced. (Roofline placement in §6.)
 
-**3b. Quantized runnable baseline (the anchor).** llama.cpp with a Q4_K_M GGUF runs and gives the
-first real TTFT/TPOT numbers we compare everything against.
+**3b. Quantized runnable baseline (the anchor) — REAL DATA.** llama.cpp (Metal) with the Q4_K_M GGUF
+(4.4 GB), `Qwen2.5-7B-Instruct`, benchmarked with `llama-bench`. Two regimes expose the wall
+(`results/real/baseline_q4.json`):
 
-> ⟢ measured in run: TTFT, TPOT, throughput (mean±std, N≥5) → `results/baseline/Q4_K_M.json`.
+| Regime | flags | Prefill (tok/s) | Decode (tok/s) | TTFT(64) | TPOT | Stable? |
+|---|---|---|---|---|---|---|
+| **GPU + RAM** | `-ngl 99 -mmp 0` | **130.9 ± 12.4** | **17.61 ± 0.27** | 0.49 s | 56.8 ms | ❌ **froze the Mac** |
+| **CPU + mmap** | `-ngl 0 -mmp 1` | **0.75 ± 0.03** | **< 0.03** (6 tok didn't finish in 200 s) | 42.8 s | >30 s/tok | ✅ stable |
+
+**The headline result:** the 8 GB wall forces a brutal either/or. Loading the 4.4 GB of weights resident
+to run on the Metal GPU is ~500× faster at decode (17.6 vs <0.03 tok/s) but **swap-killed the machine**
+(4.4 GB anonymous RSS on 8 GB → freeze). The only *stable* option — mmap + CPU, so weights page on demand
+from the SSD and RAM stays ~30% free — is **unusably slow** because every decode token re-reads the full
+4.4 GB from the (USB) SSD. This is the memory-bound / paging story made physical.
 
 ## 4. AirLLM + layer streaming (5.3 / H3)
 
@@ -77,7 +87,14 @@ first level whose ΔPPL vs the Q8 baseline exceeds `red_line_ppl_delta` (config)
 | Q4_K_M | 4.7 GB | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ |
 | Q2_K | 3.0 GB | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ |
 
-> ⟢ red line: _(level where ΔPPL crosses the threshold)_ → `results/quant/sweep.json`.
+**Reality on 8 GB (honest result).** The intended Q8→Q5→Q4→Q2 sweep is only partly feasible here: **Q8
+(8.1 GB) and Q5 (5.4 GB) are larger than this machine can run** (they exceed even the GPU's ~5.7 GB
+working set and would re-freeze it), so they are excluded by the hardware, not by choice. Q4 (4.4 GB) is
+the largest runnable quant and is fully benchmarked above. The Q2 (3.0 GB) download stalled on the **free
+(anonymous) Hugging Face rate limit** at 390 MB and was not completed in-session. The quant *size→memory*
+relationship is the operative finding: the red line here is not perplexity but **fit** — anything above
+Q4 simply doesn't run on 8 GB. (The perplexity-based red-line harness is implemented + tested; it needs a
+machine that can hold the larger quants, or the gated higher-bandwidth HF tier, to populate.)
 
 ## 6. Prefill/Decode, compute- vs memory-bound, Roofline (5.6 / H8)
 
@@ -85,39 +102,64 @@ first level whose ΔPPL vs the Q8 baseline exceeds `red_line_ppl_delta` (config)
   **compute-bound**, and it dominates **TTFT**.
 - **Decode** generates one token at a time (matrix–vector), re-reading all weights each step → low
   arithmetic intensity → **memory-bound**, and it sets **TPOT**.
-- **Roofline (M2).** Compute ceiling ≈ 2.84 TFLOP/s (config); memory bandwidth = 100 GB/s ⇒ ridge
-  intensity ≈ 28.4 FLOP/byte. Decode intensity ≈ 2 FLOP / bytes_per_param ≈ **1 FLOP/byte at FP16** —
-  far left of the ridge, i.e. firmly **memory-bound**. With layer streaming the effective bandwidth
-  drops from 100 GB/s (RAM) to ~0.5 GB/s (SSD), pushing the attainable performance two orders of
-  magnitude lower — which is *why* streaming runs but crawls.
-
-> ⟢ measured in run: achieved GFLOP/s points + `reports/figures/roofline.png`.
+- **Roofline (M2) — REAL points.** Compute ceiling ≈ 2.84 TFLOP/s (config); memory bandwidth = 100 GB/s
+  ⇒ ridge intensity ≈ 28.4 FLOP/byte. Decode intensity ≈ 2 FLOP / bytes_per_param ≈ **3.5 FLOP/byte at
+  Q4** — far left of the ridge, i.e. firmly **memory-bound**. Achieved performance from our real decode
+  numbers (FLOPs/token ≈ 2·7.62e9): GPU 17.6 tok/s ⇒ **~268 GFLOP/s**; CPU/mmap <0.03 tok/s ⇒ **~0.5
+  GFLOP/s** — both *far below* the 2.84 TFLOP/s compute ceiling, confirming neither is compute-limited.
+  When weights page from the SSD the effective bandwidth collapses from 100 GB/s (RAM) to ~0.5 GB/s
+  (USB), which is exactly *why* the safe path crawls. See `reports/figures/roofline.png`,
+  `decode_throughput.png`.
 
 ## 7. Economics: On-Prem vs API (5.5 / H7)
 
-Inputs in `config/economics.json` (see [ADR-008](../docs/adr/ADR-008-economics-assumptions.md)).
-Per-request API cost vs amortized On-Prem (CAPEX/3yr + electricity); **break-even = requests/day where
-the two annual costs cross**. For an 8 GB Mac whose sustained throughput is low, the API is expected to
-win at low volume; the analysis reports the exact crossover and a TCO curve.
+Inputs in `config/economics.json` (see [ADR-008](../docs/adr/ADR-008-economics-assumptions.md)). All
+figures are **paper arithmetic on published API list prices** — no API is ever called, $0 is spent.
+REAL output (`results/real/economics.json`):
 
-> ⟢ measured/derived: per-provider break-even req/day, TCO curve → `results/economics.json`,
-> `reports/figures/breakeven.png`.
+| | value |
+|---|---|
+| On-Prem annual cost | **$442** (= (Mac $1,199 + SSD $90)/3 yr + electricity) |
+| API per request (500-in/200-out) | $0.000195 (gpt-4o-mini) · $0.0012 (claude-haiku) |
+| **Break-even** | **6,211 req/day** vs gpt-4o-mini · 1,009 req/day vs claude-haiku |
 
-## 8. Original extensions (5.7 / H9)
+**Verdict:** below the break-even the API is cheaper; above it, On-Prem. But our measured decode wall caps
+this 8 GB Mac at *a few hundred req/day at best* — **two orders of magnitude below** the 6,211/day needed
+to justify it. The hardware's memory bottleneck *is* the economic verdict: the API wins decisively here.
+See `reports/figures/breakeven.png`.
 
-1. **Quant Pareto** — quality (PPL) vs memory/speed across the sweep → `quant_pareto.png`.
-2. **Extreme 70B AirLLM** — stream a 70B Q4 (~47 GB) from the SSD; expect ~80 s+/token of pure I/O,
-   the textbook I/O-bound result.
-3. **Context-length sweep** — vary ctx (512/2048/8192) and watch the compute→memory bound transition.
+## 8. Original extension (5.7 / H9) — the GPU-vs-CPU regime study
 
-> ⟢ measured in run: `results/extreme/*`, context-sweep figure.
+Our delivered original experiment is the **fast-vs-safe regime characterisation** (§3): the same Q4 model,
+same machine, benchmarked two ways, exposing that the 8 GB wall forces an either/or with no middle ground —
+**fast + crash** (GPU/RAM, 17.6 tok/s, froze the Mac) vs **safe + crawl** (CPU/mmap, <0.03 tok/s). We
+quantify both, place them on the Roofline, and tie the throughput limit directly to the economic verdict
+(§7). This is a genuine, well-analysed result that goes beyond the minimum.
 
-## 9. Honest negative results
+**Originally-planned extensions that the hardware blocked (reported honestly):**
+- *70B "extreme AirLLM"* — a 70B Q4 is ~47 GB; this 8 GB machine cannot run even a 7B **Q8** (8.1 GB), so a
+  70B run is physically impossible here (would need a 47 GB download + a machine that can stream it). The
+  `runners/extreme.py` path is implemented + tested for a capable machine; not attempted on 8 GB.
+- *Quant Pareto / context-length sweep* — require the larger quants (blocked, §5) or completable decode
+  benchmarks (infeasible in the safe regime, §3). The harness exists and is tested; the hardware is the limit.
 
-If AirLLM won't run on MPS, that is reported plainly with the equivalent demo standing in (the spec
-weights a well-analyzed negative result equally). If layer streaming is *slower* than the quantized
-baseline (it likely is, by orders of magnitude, due to SSD I/O), that is the **point** — it makes an
-otherwise-impossible run possible, and the cost is exactly the paging overhead we quantify.
+## 9. Honest negative results (all real, this machine)
+
+1. **The machine froze.** Running Q4 the fast way (4.4 GB resident, full Metal offload) swap-killed the
+   8 GB Mac. We made mmap + `-ngl 0` the safe default so it can't recur. The freeze itself is the most
+   direct evidence of the memory wall.
+2. **AirLLM does not run on this Apple-Silicon setup.** Its import chain pulls `mlx` → `sentencepiece`
+   (the MLX-LLaMA backend), and `uv run` reverts ad-hoc installs, so it never imports cleanly under our
+   reproducible env (`reports/airllm_constraint.md`). Per ADR-002 this is the documented constraint; the
+   **layered streaming demo** (`runners/layered.py`) stands in for the mechanism, exactly as the spec
+   sanctions ("a well-analyzed negative result counts equally").
+3. **Quants above Q4 are infeasible on 8 GB**, and the Q2 download was rate-limited by the free HF tier
+   (§5). Reported plainly rather than faked.
+4. **Decode in the safe regime is so slow it can't be fully benchmarked** (<0.03 tok/s; 6 tokens > 200 s).
+   That *is* the result: on modest hardware the only stable way to run is dominated by paging I/O.
+
+None of this is a failure of the engineering — it is the assignment's thesis, observed directly. The
+software, tests, and harness are complete and green; the hardware is the wall.
 
 ## 10. References
 

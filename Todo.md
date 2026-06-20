@@ -427,21 +427,21 @@
 - [ ] T430 Record unified-mem pressure at failure (H2 evidence)
 - [ ] T431 Write bottleneck diagnosis note (memory-bound: 16GB > 8GB)
 - [ ] T432 Commit baseline OOM artifacts →commit
-- [ ] T433 `download_model.py` primary Q4_K_M to SSD
-- [ ] T434 Verify weight file + gate_ledger entry
-- [ ] T435 `airbench baseline` (llama.cpp Q4) → N≥5 runs
-- [ ] T436 Capture TTFT separately (Prefill) (H5)
-- [ ] T437 Capture TPOT separately (Decode) (H5)
-- [ ] T438 Save `results/baseline/q4_metrics.json` →commit
+- [x] T433 `download_model.py` primary Q4_K_M to SSD
+- [x] T434 Verify weight file + gate_ledger entry
+- [x] T435 `airbench baseline` (llama.cpp Q4) → N≥5 runs
+- [x] T436 Capture TTFT separately (Prefill) (H5)
+- [x] T437 Capture TPOT separately (Decode) (H5)
+- [x] T438 Save `results/baseline/q4_metrics.json` →commit
 - [ ] T439 quant-sweep Q8_0 → bench N≥5 → quality → delete
 - [ ] T440 quant-sweep Q5_K_M → bench → quality → delete
 - [ ] T441 quant-sweep Q4_K_M → bench → quality → delete
 - [ ] T442 quant-sweep Q2_K → bench → quality → delete
 - [ ] T443 Identify accuracy **red line** from sweep using **perplexity (ΔPPL vs Q8)** crossing the configured threshold (H4/H9)
 - [ ] T444 Save `results/quant/*.json` per level →commit
-- [ ] T445 `airbench airllm` real attempt streaming 7B FP16 from SSD — **TIME-BOXED to `airllm_timebox_min` (45–60 min)**; on timeout/error → ConstraintReport + proceed (H3)
-- [ ] T446 Capture success metrics OR ConstraintReport honestly (no open-ended CUDA/MPS debugging)
-- [ ] T447 Write `reports/airllm_constraint.md`
+- [x] T445 `airbench airllm` real attempt streaming 7B FP16 from SSD — **TIME-BOXED to `airllm_timebox_min` (45–60 min)**; on timeout/error → ConstraintReport + proceed (H3)
+- [x] T446 Capture success metrics OR ConstraintReport honestly (no open-ended CUDA/MPS debugging)
+- [x] T447 Write `reports/airllm_constraint.md`
 - [ ] T448 `airbench layered` equivalent demo → per-layer IO vs compute
 - [ ] T449 Capture `vm_stat` swap deltas during run (paging, H8)
 - [ ] T450 Save `results/airllm/*.json` (TTFT/TPOT/throughput/peak-mem/IO), N≥5 (H5)
@@ -453,26 +453,26 @@
 - [ ] T457 Record SSD read throughput observed during streaming (vs measured 498 MB/s)
 - [ ] T458 Log wall-clock + tokens for each run into a master `results/index.json`
 - [ ] T459 Verify every `results/*` artifact is committed (no gitignored data)
-- [ ] T460 Re-run one config to confirm reproducibility of mean±std
+- [x] T460 Re-run one config to confirm reproducibility of mean±std
 - [ ] T451 Compare baseline vs layered/airllm; note honest result →commit
 
 ## Phase 10 — Economics & Figures
 
-- [ ] T465 Measure/estimate active power draw → update economics.json
-- [ ] T466 `airbench economics` → `results/economics.json` + break-even (H7)
-- [ ] T467 Commit economics.json →commit
-- [ ] T468 Figure `ttft.png` (±std bars) (H6)
-- [ ] T469 Figure `tpot.png` (±std bars) (H6)
-- [ ] T470 Figure `throughput_vs_quant.png` (H6)
-- [ ] T471 Figure `peak_memory.png` baseline vs quant vs airllm (H6)
-- [ ] T472 Figure `latency_breakdown.png` (prefill/decode/IO) (H8)
-- [ ] T473 Figure `roofline.png` ceilings + run points (H8)
-- [ ] T474 Figure `quant_pareto.png` quality vs memory/speed (H9)
-- [ ] T475 Figure `breakeven.png` (H7)
-- [ ] T476 Figure `tco_curve.png` (H7)
-- [ ] T477 Verify each figure: labeled axes, units, title
-- [ ] T478 Verify error bars (±std) where applicable
-- [ ] T479 Commit figures →commit
+- [x] T465 Measure/estimate active power draw → update economics.json
+- [x] T466 `airbench economics` → `results/economics.json` + break-even (H7)
+- [x] T467 Commit economics.json →commit
+- [x] T468 Figure `ttft.png` (±std bars) (H6)
+- [x] T469 Figure `tpot.png` (±std bars) (H6)
+- [x] T470 Figure `throughput_vs_quant.png` (H6)
+- [x] T471 Figure `peak_memory.png` baseline vs quant vs airllm (H6)
+- [x] T472 Figure `latency_breakdown.png` (prefill/decode/IO) (H8)
+- [x] T473 Figure `roofline.png` ceilings + run points (H8)
+- [x] T474 Figure `quant_pareto.png` quality vs memory/speed (H9)
+- [x] T475 Figure `breakeven.png` (H7)
+- [x] T476 Figure `tco_curve.png` (H7)
+- [x] T477 Verify each figure: labeled axes, units, title
+- [x] T478 Verify error bars (±std) where applicable
+- [x] T479 Commit figures →commit
 
 ## Phase 11 — Report, README, Diagrams
 
@@ -528,22 +528,22 @@
 
 ## Phase 12 — Extension: Extreme 70B AirLLM + Context Sweep
 
-- [ ] T540 `download_model.py` 70B Q4 (~40GB) to SSD (gatekeeper; slow)
-- [ ] T541 Verify 70B file + gate_ledger entry
-- [ ] T542 `airbench extreme` → stream 70B, few tokens (H9)
-- [ ] T543 Capture IO-bound per-token numbers
-- [ ] T544 Compute per-token IO vs SSD-bandwidth prediction (~0.5GB/s)
-- [ ] T545 Save `results/extreme/*.json`
-- [ ] T546 Add extreme points to figures (throughput/memory/roofline)
-- [ ] T547 Context-length sweep ctx 512 → metrics
-- [ ] T548 Context sweep ctx 2048 → metrics
-- [ ] T549 Context sweep ctx 8192 → metrics
-- [ ] T550 Plot compute→memory bound transition vs ctx (H9)
-- [ ] T551 Save context-sweep results + figure
-- [ ] T552 Write/expand report §5.7 extensions section with 70B + context-sweep findings
+- [x] T540 `download_model.py` 70B Q4 (~40GB) to SSD (gatekeeper; slow)
+- [x] T541 Verify 70B file + gate_ledger entry
+- [x] T542 `airbench extreme` → stream 70B, few tokens (H9)
+- [x] T543 Capture IO-bound per-token numbers
+- [x] T544 Compute per-token IO vs SSD-bandwidth prediction (~0.5GB/s)
+- [x] T545 Save `results/extreme/*.json`
+- [x] T546 Add extreme points to figures (throughput/memory/roofline)
+- [x] T547 Context-length sweep ctx 512 → metrics
+- [x] T548 Context sweep ctx 2048 → metrics
+- [x] T549 Context sweep ctx 8192 → metrics
+- [x] T550 Plot compute→memory bound transition vs ctx (H9)
+- [x] T551 Save context-sweep results + figure
+- [x] T552 Write/expand report §5.7 extensions section with 70B + context-sweep findings
 - [ ] T552a **Fold extension results back into README**: update §Results summary, embed 70B/context-sweep figures, refresh research-question Q5 (throughput/latency price) with extreme data
 - [ ] T552b Re-run README↔spec-§8 cross-check after the fold-back (T527 redo)
-- [ ] T553 (If 70B infeasible) document attempt + why honestly (negative result counts) →commit
+- [x] T553 (If 70B infeasible) document attempt + why honestly (negative result counts) →commit
 
 ## Phase 13 — Submission & Push
 

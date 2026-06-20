@@ -1,0 +1,17 @@
+{
+  "onprem_annual": 442.0766666666667,
+  "providers": [
+    {
+      "api_per_request": 0.000195,
+      "break_even_req_per_day": 6211.1228193419975,
+      "onprem_annual": 442.0766666666667,
+      "provider": "gpt-4o-mini"
+    },
+    {
+      "api_per_request": 0.0012000000000000001,
+      "break_even_req_per_day": 1009.3074581430745,
+      "onprem_annual": 442.0766666666667,
+      "provider": "claude-haiku"
+    }
+  ]
+}

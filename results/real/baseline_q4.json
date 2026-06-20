@@ -1,0 +1,27 @@
+{
+  "model": "Qwen2.5-7B-Instruct",
+  "quant": "Q4_K_M",
+  "size_gb": 4.4,
+  "tool": "llama-bench (llama.cpp build 9700, Metal)",
+  "note": "Two regimes on the 8 GB M2. The fast path (-mmp 0 -ngl 99: weights in RAM, full Metal offload) is ~500x faster at decode but loading 4.4 GB resident on 8 GB swap-killed/froze the machine. The safe path (-mmp 1 -ngl 0: mmap, CPU) keeps RAM low and is stable but glacial — decode pages all 4.4 GB from the USB SSD per token.",
+  "regimes": {
+    "gpu_ram": {
+      "flags": "-ngl 99 -mmp 0 -p 64 -n 64 -r 3",
+      "stable": false,
+      "stability_note": "completed the benchmark but loading 4.4 GB into 8 GB unified memory froze the system shortly after; not a safe operating point",
+      "prefill_tps": { "mean": 130.853685, "std": 12.360966, "reps": 3 },
+      "decode_tps": { "mean": 17.611037, "std": 0.273879, "reps": 3 },
+      "ttft_s_64prompt": 0.489,
+      "tpot_ms": 56.8
+    },
+    "cpu_mmap": {
+      "flags": "-ngl 0 -mmp 1 -p 32 -n 16 -r 2",
+      "stable": true,
+      "stability_note": "memory held at ~30% free throughout; no crash",
+      "prefill_tps": { "mean": 0.747497, "std": 0.034494, "reps": 2 },
+      "decode_tps": { "mean": null, "note": "6 decode tokens did not finish in 200 s → < 0.03 tok/s; >30 s/token, dominated by USB-SSD page-ins of the 4.4 GB weights" },
+      "ttft_s_32prompt": 42.8
+    }
+  },
+  "headline": "Decode throughput collapses 17.6 -> <0.03 tok/s (>500x) when the 8 GB wall forces weights off the GPU and onto demand-paging from the SSD. This is the memory-bound / paging result the lecture predicts."
+}
