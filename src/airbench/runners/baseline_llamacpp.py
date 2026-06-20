@@ -26,6 +26,13 @@ def build_argv(
         "-s",
         str(seed),
         "--no-display-prompt",
+        "-no-cnv",  # disable interactive conversation mode (else it hangs waiting for input)
+        "--simple-io",  # subprocess-friendly IO
+        # NOTE: we deliberately keep mmap ON (the default). On an 8 GB Mac, --no-mmap forces
+        # all ~4.4 GB of weights resident and froze the machine — itself evidence of the wall.
+        # mmap keeps RAM low (weights page on demand) at the cost of speed.
+        "-ngl",
+        "0",  # CPU-only by default: full Metal offload of 4.4 GB into 8 GB unified memory destabilises the system
     ]
 
 
