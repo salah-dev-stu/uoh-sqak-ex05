@@ -1,0 +1,17 @@
+# Memory state capture (macOS) — 2026-06-20T10:21:18Z
+## memory_pressure
+
+File I/O:
+Pageins: 10399551 
+Pageouts: 279978 
+
+System-wide memory free percentage: 57%
+## vm_stat (page size + key counters)
+Mach Virtual Memory Statistics: (page size of 16384 bytes)
+Pages free:                                3918.
+Pages active:                            139239.
+Pages inactive:                          137968.
+Pages speculative:                          758.
+Pages throttled:                              0.
+Pages wired down:                        115678.
+Pages purgeable:                           3408.

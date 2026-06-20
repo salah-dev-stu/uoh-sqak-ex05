@@ -46,8 +46,14 @@ Live values are captured to `results/<run>/hardware.json` by `airbench probe`.
 **Qwen2.5-7B-Instruct** (ungated). 7.62 B params, 28 layers, hidden 3584. **FP16 ≈ 15.2 GB ≈ 2× the
 8 GB RAM** → a direct full-precision load cannot fit and OOMs. GGUF quants (Q8 ~8.1 GB … Q2 ~3.0 GB)
 are storable on the SSD and runnable. Using one model across baseline → quantization → streaming keeps
-the whole narrative coherent. (Llama-3.1-8B is the documented gated alternative; see
-[ADR-001](../docs/adr/ADR-001-model-choice.md).)
+the whole narrative coherent.
+
+**License (the lecturer emphasized this hard — "license terms can bring down an organization").** Qwen2.5-7B
+is **Apache-2.0**: unrestricted commercial use, open download, no token — ideal for an on-prem deployment with
+zero legal review. The documented alternative, Llama-3.1-8B, carries Meta's custom **Llama 3.1 Community
+License** (gated access + token, a >700 M-MAU commercial clause, an acceptable-use policy) — a product
+embedding it *inherits* those terms. For on-prem, Apache-2.0 is the audit-free, safe choice (see
+[ADR-001](../docs/adr/ADR-001-model-choice.md)).
 
 ## 3. Baseline: it fails (5.2 / H2)
 

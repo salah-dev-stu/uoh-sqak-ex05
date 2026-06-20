@@ -98,13 +98,75 @@ def breakeven_chart(e):
     _save(fig, "breakeven.png")
 
 
+def memory_chart(m):
+    safe = m["safe_cpu_mmap"]["free_pct_series"]
+    fast = m["fast_gpu_resident"]["free_pct_series"]
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    ax.plot(
+        [i * 20 for i in range(len(safe))],
+        safe,
+        "o-",
+        color="#4C72B0",
+        label="CPU + mmap (safe) — stable",
+    )
+    ax.plot(
+        [i * 20 for i in range(len(fast))],
+        fast,
+        "s--",
+        color="#C44E52",
+        label="GPU + -mmp 0 (resident) — froze",
+    )
+    ax.scatter([(len(fast) - 1) * 20], [0], marker="x", s=140, color="#C44E52", zorder=6)
+    ax.annotate(
+        "FREEZE\n(swap-death)",
+        ((len(fast) - 1) * 20, 0),
+        textcoords="offset points",
+        xytext=(-10, 25),
+        color="#C44E52",
+        fontsize=9,
+        ha="center",
+    )
+    ax.set_xlabel("time (s)")
+    ax.set_ylabel("system memory free (%)")
+    ax.set_title("Memory during Q4 inference on 8 GB M2 — the wall")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+    _save(fig, "memory_pressure.png")
+
+
+def tco_chart(e):
+    onprem = e["onprem_annual"]
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    reqs = list(range(0, 8001, 400))
+    ax.axhline(onprem, ls="-", color="#55A868", label=f"On-Prem (${onprem:.0f}/yr, flat)")
+    for p, col in zip(e["providers"], ["#4C72B0", "#C44E52"], strict=False):
+        ax.plot(
+            reqs,
+            [p["api_per_request"] * r * 365 for r in reqs],
+            "-",
+            color=col,
+            label=f"API {p['provider']} (break-even {p['break_even_req_per_day']:.0f}/day)",
+        )
+    ax.axvspan(0, 300, alpha=0.12, color="red")
+    ax.text(150, onprem * 1.5, "this Mac's\ncapacity", color="red", fontsize=8, ha="center")
+    ax.set_xlabel("requests / day")
+    ax.set_ylabel("annual cost ($)")
+    ax.set_title("TCO: On-Prem vs API — API wins far below the break-even")
+    ax.legend(fontsize=8)
+    ax.grid(alpha=0.3)
+    _save(fig, "tco_curve.png")
+
+
 def main() -> int:
     b = read_json("results/real/baseline_q4.json")
     e = read_json("results/real/economics.json")
+    m = read_json("results/real/memory_regimes.json")
     decode_chart(b)
     prefill_chart(b)
     roofline_chart(b)
     breakeven_chart(e)
+    memory_chart(m)
+    tco_chart(e)
     return 0
 
 

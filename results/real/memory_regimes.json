@@ -1,0 +1,13 @@
+{
+  "note": "System-wide memory free % sampled every 20 s during the two real Q4 regimes. Safe mode (CPU + mmap) was monitored live and held steady; fast mode (GPU + -mmp 0, weights resident) drove the 8 GB machine into swap-death and FROZE it — there is no clean tail because the system became unresponsive. The freeze itself is the datum.",
+  "safe_cpu_mmap": {
+    "flags": "-ngl 0 -mmp 1",
+    "free_pct_series": [45, 30, 29, 29, 30, 29, 29, 30, 30, 30, 30, 29],
+    "outcome": "stable — file-backed pages are reclaimable, RAM never exhausted"
+  },
+  "fast_gpu_resident": {
+    "flags": "-ngl 99 -mmp 0",
+    "free_pct_series": [45, 28, 12, 3, 0],
+    "outcome": "froze — 4.4 GB anonymous RSS on 8 GB exhausted RAM; system became unresponsive"
+  }
+}
