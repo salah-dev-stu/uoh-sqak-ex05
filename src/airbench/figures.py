@@ -73,6 +73,30 @@ def scatter_roofline(
     return p
 
 
+def lora_loss(path, iters, train, val) -> Path:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    ax.plot(iters, train, "o-", color="#4C72B0", label="train loss")
+    if val:
+        ax.plot(
+            [v["iter"] for v in val],
+            [v["loss"] for v in val],
+            "s--",
+            color="#C44E52",
+            label="val loss",
+        )
+    ax.set_xlabel("iteration")
+    ax.set_ylabel("loss")
+    ax.set_title("QLoRA fine-tune on 8 GB M2 — training loss")
+    ax.legend()
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(p, dpi=130)
+    plt.close(fig)
+    return p
+
+
 def build_all(results_dir, out_dir) -> list[Path]:
     """Best-effort: emit figures for whichever result files are present."""
     from airbench.metrics.aggregate import read_json

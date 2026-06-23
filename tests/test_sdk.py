@@ -72,6 +72,16 @@ def test_run_quant_sweep_delegates(sdk, monkeypatch):
     assert (sdk.results_dir / "quant" / "sweep.json").exists()
 
 
+def test_run_lora_delegates(sdk, monkeypatch):
+    from airbench.runners.run_types import LoraResult
+
+    res = LoraResult(base_model="m", iters=[10], train_loss=[2.0], val=[])
+    monkeypatch.setattr(facade.lora, "run_lora", lambda gk, cfg, model: res)
+    out = sdk.run_lora()
+    assert out is res
+    assert (sdk.results_dir / "lora" / "metrics.json").exists()
+
+
 def test_compute_economics(sdk):
     report = sdk.compute_economics()
     assert report["onprem_annual"] > 0

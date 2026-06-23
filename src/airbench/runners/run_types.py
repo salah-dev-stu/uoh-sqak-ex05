@@ -75,3 +75,24 @@ class LayeredMetrics:
             "total_io_s": self.total_io_s,
             "total_compute_s": self.total_compute_s,
         }
+
+
+@dataclass
+class LoraResult:
+    """On-device QLoRA fine-tune metrics (H9)."""
+
+    base_model: str
+    iters: list[int]
+    train_loss: list[float]
+    val: list[dict[str, Any]]
+    trainable_pct: float | None = None
+    trainable_m: float | None = None
+    total_m: float | None = None
+    peak_mem_gb: float | None = None
+    duration_s: float | None = None
+    adapter_path: str | None = None
+    before: str | None = None
+    after: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)

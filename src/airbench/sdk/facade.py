@@ -16,7 +16,7 @@ from airbench import figures
 from airbench.economics import calculator
 from airbench.metrics.aggregate import write_json
 from airbench.metrics.memory import peak_rss_mb
-from airbench.runners import baseline_llamacpp, baseline_oom, extreme, layered, quant_sweep
+from airbench.runners import baseline_llamacpp, baseline_oom, extreme, layered, lora, quant_sweep
 from airbench.runners.airllm import run_airllm
 from airbench.sdk import loaders, probe
 from airbench.shared import config
@@ -104,6 +104,12 @@ class BenchSDK:
             self.gatekeeper, loader, generate, rt.get("airllm_timebox_min", 60)
         )
         self._save("extreme/extreme.json", out.to_dict())
+        return out
+
+    def run_lora(self) -> Any:
+        cfg = config.get_lora()
+        out = lora.run_lora(self.gatekeeper, cfg, cfg["base"])
+        self._save("lora/metrics.json", out.to_dict())
         return out
 
     def compute_economics(self) -> dict[str, Any]:
