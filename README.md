@@ -228,6 +228,22 @@ module makes zero network calls). Inputs in `config/economics.json`.
 - **Verdict:** the measured decode wall caps this Mac at a *few hundred* req/day — **~20× below** the break-even.
   The hardware's memory bottleneck **is** the economic verdict: at this scale the API wins decisively.
 
+## 8b. Standout — we *fine-tuned* an LLM on the 8 GB Mac (QLoRA)
+
+The mirror image of the headline: the machine that **can't run a 7B for inference** **can train one**. Via
+Apple's `mlx-lm` we ran **QLoRA** (LoRA adapters on a 4-bit Qwen2.5-1.5B), teaching it airbench's own findings:
+
+| Trainable | Peak mem | Time | Train loss | Adapter |
+|---|---|---|---|---|
+| **0.171 %** (2.6 M / 1.54 B) | **1.36 GB** | **~95 s** | 2.56 → 0.04 | 10.5 MB |
+
+![qlora loss](reports/figures/lora_loss.png)
+
+**Before** (base): *"I couldn't find any information about the 8 GB memory wall…"* → **After** (tuned): *"On an
+8 GB M2 you can run fast and crash … or safe and crawl … There is no free lunch."* — a clean, verifiable
+behaviour change. `mlx` wouldn't load for AirLLM but is the right tool for LoRA — the dead-end became a win.
+Run it: `uv run python scripts/run_lora.py` (see [ADR-009](docs/adr/ADR-009-qlora-on-device.md)).
+
 ## 9. Conclusion — the constraints *are* the experiment
 
 This is the honest, measured result, and it is exactly what the assignment rewards:
@@ -238,6 +254,7 @@ This is the honest, measured result, and it is exactly what the assignment rewar
 3. **Layer streaming = OS paging** — feasible but I/O-bound; we measured the exact cost.
 4. **AirLLM doesn't run on Apple Silicon** — documented constraint + equivalent demo (negative results count).
 5. **Economics follows from the hardware** — the throughput limit, not a spreadsheet guess, decides API-vs-local.
+6. **It can't run a 7B, but it can train one** — QLoRA fine-tuned a 1.5B in 95 s at 1.36 GB peak (§8b).
 
 > *"This is the assignment's thesis, observed directly."*
 

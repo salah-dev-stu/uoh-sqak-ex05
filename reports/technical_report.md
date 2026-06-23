@@ -168,6 +168,36 @@ quantify both, place them on the Roofline, and tie the throughput limit directly
 - *Quant Pareto / context-length sweep* — require the larger quants (blocked, §5) or completable decode
   benchmarks (infeasible in the safe regime, §3). The harness exists and is tested; the hardware is the limit.
 
+## 8b. The standout — on-device QLoRA (we *trained* an LLM on the 8 GB Mac, H9)
+
+The headline negative is "the 8 GB M2 can't run a 7B." The standout positive is its mirror image: **the same
+machine can fine-tune one.** Using Apple's `mlx-lm`, we ran **QLoRA** — LoRA adapters on a **4-bit** base
+(`mlx-community/Qwen2.5-1.5B-Instruct-4bit`) — taught on a small self-referential dataset of airbench's own
+findings (Lecture 08: LoRA lets individuals fine-tune on a laptop; output quality is not graded, the
+*demonstration* is).
+
+| Metric | Real value (8 GB M2) |
+|---|---|
+| Trainable params (`W = W₀ + BA`) | **0.171 %** — 2.638 M / 1543.7 M |
+| Peak memory during training | **1.36 GB** (vs the 7B that froze it) |
+| Wall-clock | **~95 s** for 150 iters |
+| Train loss | **2.557 → 0.041** |
+| Val loss | 4.70 → 2.54 (slight overfit on the tiny set — honest) |
+| Adapter size | 10.5 MB (vs ~1 GB base) |
+
+![qlora loss](figures/lora_loss.png)
+
+**Verifiable behaviour change** (`results/real/lora/{before,after}.txt`):
+- *Before* (base): "I couldn't find any information about 'the 8 GB memory wall'…"
+- *After* (tuned): "On an 8 GB M2 you can run the model fast and crash … or safe and crawl … There is no free
+  lunch." — it learned airbench's own finding.
+
+This pairs with the AirLLM constraint (ADR-002): `mlx` would not load for AirLLM, but `mlx-lm` is the right
+native tool for LoRA — the dead-end became a win. One real debugging loop (the Gatekeeper truncated the
+training log to 2000 chars, hiding the parameter header → fixed to keep the full log) is itself the
+lecturer's *"I tried, it didn't work, then I debugged"* arc. See [ADR-009](../docs/adr/ADR-009-qlora-on-device.md);
+run it with `airbench lora`.
+
 ## 9. Honest negative results (all real, this machine)
 
 1. **The machine froze.** Running Q4 the fast way (4.4 GB resident, full Metal offload) swap-killed the

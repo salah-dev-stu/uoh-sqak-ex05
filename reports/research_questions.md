@@ -19,8 +19,10 @@ I/O-vs-compute and `vm_stat` swap/pagein deltas. See report §4.
 ### Q3 — Quantization's effect on memory/speed/quality — where's the accuracy red line?
 Lower bits ⇒ smaller footprint and (usually) faster memory-bound decode, at rising perplexity. The red
 line is the first GGUF level whose ΔPPL vs Q8 exceeds the configured threshold (objective, via
-`llama-perplexity`). See report §5.
-**Evidence:** `results/quant/sweep.json`, `reports/figures/quant_pareto.png`.
+`llama-perplexity`). See report §5. **Beyond inference, quantization also enables *training*:** QLoRA
+(LoRA adapters on a 4-bit base) fine-tuned a 1.5B model on the same 8 GB Mac at 1.36 GB peak in ~95 s —
+quantization is what makes both running *and* adapting feasible on modest hardware (report §8b).
+**Evidence:** `results/quant/sweep.json`, `results/real/lora/metrics.json`, `reports/figures/lora_loss.png`.
 
 ### Q4 — How do Prefill/Decode show up in your TTFT vs TPOT split?
 **TTFT** is dominated by **Prefill** (parallel, compute-bound, matrix–matrix). **TPOT** is the
