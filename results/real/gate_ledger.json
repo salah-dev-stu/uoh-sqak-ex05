@@ -1,0 +1,29 @@
+[
+  {
+    "label": "python -m mlx_lm",
+    "kind": "subprocess",
+    "duration_s": 7.887027,
+    "ok": true,
+    "bytes_in": 0,
+    "bytes_out": 0,
+    "detail": "rc=0"
+  },
+  {
+    "label": "python -m mlx_lm",
+    "kind": "subprocess",
+    "duration_s": 94.843732,
+    "ok": true,
+    "bytes_in": 0,
+    "bytes_out": 0,
+    "detail": "rc=0"
+  },
+  {
+    "label": "python -m mlx_lm",
+    "kind": "subprocess",
+    "duration_s": 7.448566,
+    "ok": true,
+    "bytes_in": 0,
+    "bytes_out": 0,
+    "detail": "rc=0"
+  }
+]

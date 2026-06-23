@@ -4,5 +4,5 @@ The literal lives here once. ``__init__`` imports ``VERSION``; the build backend
 (hatchling) reads ``__version__``; a test asserts they agree. Bump ``+0.01`` per change.
 """
 
-__version__ = "1.20"
+__version__ = "1.30"
 VERSION = __version__
