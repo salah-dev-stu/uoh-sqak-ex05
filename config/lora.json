@@ -1,0 +1,15 @@
+{
+  "base": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "fallback": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+  "data_dir": "data/lora",
+  "adapter_dir": "results/real/lora/adapters",
+  "iters": 150,
+  "batch_size": 1,
+  "num_layers": 8,
+  "lora_rank": 8,
+  "max_seq_len": 512,
+  "learning_rate": 0.0001,
+  "steps_per_eval": 25,
+  "timeout_s": 3600,
+  "eval_prompt": "What did airbench find about the 8 GB memory wall?"
+}

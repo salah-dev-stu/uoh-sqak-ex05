@@ -58,6 +58,18 @@ _SCHEMA: dict[str, tuple[set[str], set[str]]] = {
             "notes",
         },
     ),
+    "lora": (
+        {"base", "data_dir", "adapter_dir", "iters", "batch_size", "num_layers"},
+        {
+            "fallback",
+            "lora_rank",
+            "max_seq_len",
+            "learning_rate",
+            "steps_per_eval",
+            "timeout_s",
+            "eval_prompt",
+        },
+    ),
 }
 
 
@@ -113,3 +125,7 @@ def get_hardware() -> dict[str, Any]:
 
 def get_quant_levels() -> list[dict[str, Any]]:
     return load("quant_levels")["levels"]
+
+
+def get_lora() -> dict[str, Any]:
+    return load("lora")

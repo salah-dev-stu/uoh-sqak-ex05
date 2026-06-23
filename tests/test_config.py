@@ -79,6 +79,13 @@ def test_accessors_return_dicts():
     assert config.get_hardware()["ram_gb"] == 8
 
 
+def test_get_lora():
+    cfg = config.get_lora()
+    assert cfg["base"].startswith("mlx-community/")
+    assert cfg["iters"] == 150 and cfg["batch_size"] == 1
+    assert cfg["data_dir"] == "data/lora"
+
+
 def test_config_dir_absolute(write_config):
     cfg = write_config({"models": {"primary": {}}})
     assert config.config_dir() == cfg
