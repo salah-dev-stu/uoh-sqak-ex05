@@ -23,6 +23,8 @@ heavy = [
     "torch>=2.4",
     "airllm>=2.11",
     "llama-cpp-python>=0.3",
+    "mlx>=0.18; platform_system == 'Darwin'",
+    "mlx-lm>=0.18; platform_system == 'Darwin'",
 ]
 
 [project.scripts]
