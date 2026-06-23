@@ -1,7 +1,7 @@
 # Research Questions (spec §4 / H11)
 
-Each question → the answer → the evidence file that backs it. Numbers marked _⟢_ come from the
-committed `results/` artifacts once the on-device runs execute; the reasoning is final.
+Each question → the answer → the evidence file that backs it. All numbers are filled from the committed
+`results/` artifacts (real on-device runs); where a measurement is infeasible on 8 GB it is stated explicitly.
 
 ### Q1 — What blocked the direct run: memory or compute, and how did you identify it?
 **Memory-bound.** Qwen2.5-7B FP16 ≈ 15.2 GB > 8 GB unified memory, so the load OOMs before sustained

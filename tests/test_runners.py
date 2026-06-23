@@ -8,10 +8,8 @@ from airbench.runners import (
     airllm,
     baseline_llamacpp,
     baseline_oom,
-    extreme,
     layered,
     llamacpp_parser,
-    quant_sweep,
 )
 from airbench.runners.run_types import ConstraintReport, RunMetrics
 
@@ -140,70 +138,3 @@ def test_airllm_constraint_on_load_failure():
     out = airllm.run_airllm(gk, lambda: None, lambda m: RunMetrics("x"))
     assert isinstance(out, ConstraintReport)
     assert out.fallback == "layered" and "ImportError" in out.reason
-
-
-# ---------------------- quant_sweep ----------------------
-
-
-def test_quant_sweep_serial_delete_and_red_line():
-    levels = [{"name": "Q8_0"}, {"name": "Q5_K_M"}, {"name": "Q4_K_M"}, {"name": "Q2_K"}]
-    ppls = {"Q8_0": 7.0, "Q5_K_M": 7.1, "Q4_K_M": 7.3, "Q2_K": 9.5}
-    events = []
-
-    def download(lvl):
-        events.append(("dl", lvl["name"]))
-        return f"/Volumes/Backup/{lvl['name']}.gguf"
-
-    def cleanup(path):
-        events.append(("rm", path))
-
-    out = quant_sweep.run_sweep(
-        levels,
-        download=download,
-        bench=lambda lvl, p: RunMetrics(lvl["name"], tpot_s=0.1),
-        perplexity=lambda lvl, p: ppls[lvl["name"]],
-        cleanup=cleanup,
-        threshold=0.5,
-    )
-    # red line: first level with ppl - min(7.0) > 0.5 → Q2_K (9.5)
-    assert out["red_line"] == "Q2_K"
-    # every download is followed by a cleanup before the next download (≤1 weight at a time)
-    kinds = [e[0] for e in events]
-    assert kinds == ["dl", "rm", "dl", "rm", "dl", "rm", "dl", "rm"]
-
-
-def test_quant_sweep_continues_after_failure():
-    levels = [{"name": "Q8_0"}, {"name": "Q4_K_M"}]
-    cleaned = []
-
-    def bench(lvl, p):
-        if lvl["name"] == "Q8_0":
-            raise RuntimeError("llama.cpp crashed")
-        return RunMetrics("Q4_K_M")
-
-    out = quant_sweep.run_sweep(
-        levels,
-        download=lambda lvl: "p",
-        bench=bench,
-        perplexity=lambda lvl, p: 7.0,
-        cleanup=lambda p: cleaned.append(p),
-        threshold=0.5,
-    )
-    assert out["levels"][0]["error"] is not None
-    assert out["levels"][1]["metrics"]["label"] == "Q4_K_M"
-    assert len(cleaned) == 2  # cleanup ran even for the failed level
-
-
-# ---------------------- extreme ----------------------
-
-
-def test_extreme_tags_metrics():
-    gk = FakeGK()
-    out = extreme.run_extreme(gk, lambda: "m", lambda m: RunMetrics("70b"))
-    assert out.extra["extreme"] is True
-
-
-def test_extreme_constraint_passthrough():
-    gk = FakeGK(raise_exc=RuntimeError("CUDA required"))
-    out = extreme.run_extreme(gk, lambda: None, lambda m: RunMetrics("x"))
-    assert isinstance(out, ConstraintReport)

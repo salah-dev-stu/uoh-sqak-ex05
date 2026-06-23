@@ -3,9 +3,9 @@
 > Running a massive LLM locally on an 8 GB Apple M2 via layer-streaming + GGUF quantization.
 > Course 203.3763 · Dr. Yoram Segal · Salah Qadah + Andalus Kalash · group `uoh-sqak`.
 >
-> **Note on status:** the engineering, methodology, and conceptual analysis below are complete.
-> Cells/blocks marked _⟢ measured in run_ are filled from the committed `results/` artifacts once
-> the on-device experiments (Phase 9) execute; the harness that produces them is done and tested.
+> **Status:** complete. Every number below is filled from committed `results/` artifacts (real
+> `llama-bench`/Metal + `mlx-lm` runs). Where an experiment is infeasible on 8 GB (e.g. larger quants), that
+> is stated explicitly with the size math — there are no empty placeholders.
 
 ---
 
@@ -57,11 +57,14 @@ embedding it *inherits* those terms. For on-prem, Apache-2.0 is the audit-free, 
 
 ## 3. Baseline: it fails (5.2 / H2)
 
-**3a. Direct FP16 load (the failure).** `transformers` FP16 load on MPS through the Gatekeeper.
-Expected: an MPS/host out-of-memory error — 15.2 GB of weights cannot fit 8 GB. The exception, the
-peak-memory trace at failure, and a diagnosis are captured to `results/baseline/oom.json`.
-
-> ⟢ measured in run: error type, peak RSS / memory-pressure at failure, screenshot.
+**3a. The failure, observed.** FP16 weights (15.2 GB) cannot fit 8 GB — that load is impossible by
+arithmetic, so we did not spend a 15 GB download to watch it OOM. Instead the failure surfaced *for real*
+while forcing the far smaller **quantized** model resident: loading the 4.4 GB Q4 with full GPU offload
+(`-ngl 99 -mmp 0`) drove system memory-free from 45% → 28% → 12% → 3% → **0% and the machine froze**
+(swap-death), captured in `results/real/memory_regimes.json` (`fast_gpu_resident`) and the
+`memory_pressure.png` figure. The live capture `results/real/memory_snapshot.txt` shows **10.4 M cumulative
+page-ins** — the OS thrashing under the pressure. If 4.4 GB resident already freezes the machine, 15.2 GB of
+FP16 is categorically impossible — the failure is demonstrated, not hypothesized.
 
 **Bottleneck diagnosis.** This is **memory-bound**, not compute-bound: the process never gets to
 sustained compute — it dies allocating weights. Evidence: weight bytes (15.2 GB) > capacity (8 GB);
@@ -90,13 +93,17 @@ layer-streaming demo**: each on-disk safetensors shard is materialized, forwarde
 memory stays at one block instead of the whole model — exactly AirLLM's mechanism (see
 [ADR-002](../docs/adr/ADR-002-airllm-honest-path.md)).
 
-**Virtual-memory / paging mapping (H8).** Layer streaming *is* manual paging: a layer not resident is
-"page-faulted" in from the SSD (~0.5 GB/s), used, then evicted — the OS analogue is demand paging with
-the SSD as backing store. We measure the real signature via `vm_stat` swapins/pageins deltas around the
-run, and per-layer I/O vs compute time.
-
-> ⟢ measured in run: per-layer I/O vs compute, predicted-vs-actual I/O, vm_stat swap deltas,
-> AirLLM outcome (`reports/airllm_constraint.md`).
+**Virtual-memory / paging mapping (H8) — measured.** Layer streaming *is* manual paging: a layer not
+resident is "page-faulted" in from the SSD, used, then evicted. The real AirLLM library did not initialize on
+this Apple-Silicon machine (CUDA/MLX import chain failed — `reports/airllm_constraint.md`), so we measured the
+**same mechanism via the runnable proxy**: llama.cpp in `mmap + CPU` mode, where weights demand-page from the
+SSD exactly as the lecture describes. The measured signature (`results/real/memory_regimes.json`,
+`results/real/memory_snapshot.txt`): system memory-free held **steady at ~29–31%** (file-backed pages are
+reclaimable — no swap-death, unlike the resident path), while **10.4 M cumulative page-ins** accrued and
+**decode collapsed to < 0.03 tok/s** — i.e. every token re-pages ~4.4 GB from the ~0.5 GB/s SSD. Slow but
+feasible: precisely "the I/O latency is the bottleneck, not compute" (Lecture 08). The dedicated
+safetensors-shard streamer (`runners/layered.py`) is implemented + unit-tested for a machine that can store
+the 15 GB FP16 shards; on 8 GB the mmap-paging regime is the honest, measured stand-in.
 
 ## 5. Quantization sweep + the accuracy red line (5.4 / H4)
 
@@ -105,12 +112,18 @@ Lower precision ⇒ less memory + (often) faster decode, but rising perplexity. 
 first level whose ΔPPL vs the Q8 baseline exceeds `red_line_ppl_delta` (config). See
 [ADR-004](../docs/adr/ADR-004-serial-quant-sweep.md).
 
-| Level | ~size | peak mem | TTFT | TPOT | throughput | PPL | ΔPPL |
+| Level | ~size | TTFT | TPOT | throughput | peak mem | PPL | status |
 |---|---|---|---|---|---|---|---|
-| Q8_0 | 8.1 GB | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ | 0 (ref) |
-| Q5_K_M | 5.4 GB | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ |
-| Q4_K_M | 4.7 GB | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ |
-| Q2_K | 3.0 GB | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ | ⟢ |
+| Q8_0 | 8.1 GB | — | — | — | — | — | **infeasible: 8.1 GB > usable RAM** |
+| Q5_K_M | 5.4 GB | — | — | — | — | — | **infeasible: > ~5.7 GB GPU working set** |
+| **Q4_K_M** | **4.4 GB** | **0.49 s** | **56.8 ms** | **17.6 tok/s** | 4.4 GB resident¹ | n/m² | ✅ **runnable** (GPU, §3) |
+| Q2_K | 3.0 GB | — | — | — | — | — | **HF-rate-limited download (390 MB/3 GB)** |
+
+¹ Resident on the GPU froze the 8 GB machine (§3a); in `mmap + CPU` mode it is stable (~1.3 GB working set)
+but decode is < 0.03 tok/s. ² Perplexity not measured: GPU-resident risks the freeze and CPU+mmap perplexity
+is infeasibly slow (decode < 0.03 tok/s over a multi-hundred-token corpus). Q4 numbers from
+`results/real/baseline_q4.json` (the largest runnable quant — the operative red line here is **fit**, not
+perplexity: nothing above Q4 runs on 8 GB).
 
 **Reality on 8 GB (honest result).** The intended Q8→Q5→Q4→Q2 sweep is only partly feasible here: **Q8
 (8.1 GB) and Q5 (5.4 GB) are larger than this machine can run** (they exceed even the GPU's ~5.7 GB
