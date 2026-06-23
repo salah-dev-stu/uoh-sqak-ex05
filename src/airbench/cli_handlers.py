@@ -41,6 +41,10 @@ def _extreme(sdk, args) -> Any:
     return sdk.run_extreme(generate=airllm_generate(sdk))
 
 
+def _lora(sdk, args) -> Any:
+    return sdk.run_lora()
+
+
 def _economics(sdk, args) -> Any:
     return sdk.compute_economics()
 
@@ -66,6 +70,7 @@ HANDLERS = {
     "airllm": _airllm,
     "layered": _layered,
     "extreme": _extreme,
+    "lora": _lora,
     "economics": _economics,
     "figures": _figures,
     "all": _all,

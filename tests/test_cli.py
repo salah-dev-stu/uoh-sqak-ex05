@@ -86,6 +86,11 @@ def test_extreme_dispatch(patched_sdk):
     assert "run_extreme" in patched_sdk
 
 
+def test_lora_dispatch(patched_sdk):
+    assert cli.main(["lora"]) == 0
+    assert "run_lora" in patched_sdk
+
+
 def test_version_flag(capsys):
     with pytest.raises(SystemExit) as e:
         cli.main(["--version"])
