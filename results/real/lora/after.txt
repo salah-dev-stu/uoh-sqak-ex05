@@ -1,0 +1,1 @@
+On an 8 GB M2 you can run the model fast and crash (weights resident causes swap-death and a freeze) or safe and crawl (mmap plus CPU pages weights from disk). There is no free lunch.

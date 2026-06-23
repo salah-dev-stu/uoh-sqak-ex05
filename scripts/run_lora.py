@@ -20,7 +20,9 @@ from airbench.shared import config
 
 def _gen(sdk, model, prompt, adapter=None):
     argv = lora.build_generate_argv(model, prompt, adapter_path=adapter, max_tokens=80)
-    return sdk.gatekeeper.run_subprocess(argv, timeout=600).stdout_tail
+    out = sdk.gatekeeper.run_subprocess(argv, timeout=600).stdout_tail
+    parts = out.split("==========")  # mlx_lm.generate brackets the text with these
+    return parts[1].strip() if len(parts) >= 3 else out.strip()
 
 
 def main() -> int:

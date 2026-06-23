@@ -100,7 +100,9 @@ class ApiGatekeeper:
                 detail=("TIMEOUT" if timed_out else f"rc={rc}"),
             )
         )
-        return RunResult(rc, (out or "")[-2000:], dur, timed_out, list(argv))
+        # Keep up to ~1 MB so long logs (e.g. a 150-iter training run, whose header line
+        # appears at the very start) parse fully; the ledger detail stays short regardless.
+        return RunResult(rc, (out or "")[-1_000_000:], dur, timed_out, list(argv))
 
     def load_model(self, loader: Callable[[], Any], label: str) -> Any:
         start = self._clock()
