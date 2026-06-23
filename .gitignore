@@ -40,3 +40,6 @@ CONTEXT-lecture-08.md
 *.playwright-mcp
 readme-full.png
 architecture-rendered.png
+
+# brainstorming/spec scratch — keep out of the assignment repo
+docs/superpowers/
